@@ -1,13 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
+from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import (
-    Employee,
-    JobTitle,
-    Department,
-    Address,
-    Person,
-    VEmployee,
-)
+from .models import Employee, Department, Address, Person, VEmployee, SalesOrderHeader
 from .serializers import (
     EmployeeSerializer,
     JobTitleSerializer,
@@ -15,8 +10,10 @@ from .serializers import (
     AddressSerializer,
     PersonSerializer,
     VEmployeeSerializer,
+    VEmployeeDetailSerializer,
+    SalesOrderHeaderSerializer,
 )
-from .filters import VEmployeeFilter
+from .filters import VEmployeeFilter, SalesOrderFilter
 
 
 class EmployeeViewSet(viewsets.ModelViewSet):
@@ -25,7 +22,7 @@ class EmployeeViewSet(viewsets.ModelViewSet):
 
 
 class JobTitleViewSet(viewsets.ModelViewSet):
-    queryset = JobTitle.objects.all()
+    queryset = Employee.objects.order_by("JobTitle").values("JobTitle").distinct()
     serializer_class = JobTitleSerializer
 
 
@@ -39,9 +36,11 @@ class AddressViewSet(viewsets.ModelViewSet):
     serializer_class = AddressSerializer
 
 
-# class SalesOrderHeaderViewSet(viewsets.ModelViewSet):
-#     queryset = SalesOrderHeader.objects.all()
-#     serializer_class = SalesOrderHeaderSerializer
+class SalesOrderHeaderViewSet(viewsets.ModelViewSet):
+    queryset = SalesOrderHeader.objects.all()
+    serializer_class = SalesOrderHeaderSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
+    filterset_class = SalesOrderFilter
 
 
 class PersonViewSet(viewsets.ModelViewSet):
@@ -52,5 +51,24 @@ class PersonViewSet(viewsets.ModelViewSet):
 class VEmployeeViewSet(viewsets.ModelViewSet):
     queryset = VEmployee.objects.all()
     serializer_class = VEmployeeSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = VEmployeeFilter
+    search_fields = [
+        "FirstName",
+        "LastName",
+        "City",
+        "StateProvinceName",
+        "PostalCode",
+        "CountryRegionName",
+        "PhoneNumber",
+        "EmailAddress",
+    ]
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+        except VEmployee.DoesNotExist:
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = VEmployeeDetailSerializer(instance)
+        return Response(serializer.data)

@@ -16,8 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-from django.urls import include
+from django.urls import path, include
 from rest_framework import routers
 from employee.urls import router as employee_routers
 from django.urls import re_path
@@ -56,4 +55,5 @@ urlpatterns = [
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("api/", include("rest_framework.urls")),
     path("api/", include(router.urls)),
+    path("api/", include("employee.urls")),
 ]

@@ -17,13 +17,6 @@ class Department(BaseModel):
         db_table = "[HumanResources].[Department]"
 
 
-class JobTitle(BaseModel):
-    title = models.CharField(max_length=50)
-
-    class Meta:
-        db_table = "JobTitle"
-
-
 class StateProvince(models.Model):
     StateProvinceID = models.AutoField(primary_key=True)
     StateProvinceCode = models.CharField(max_length=3)
@@ -114,10 +107,6 @@ class Employee(BaseModel):
 
     class Meta:
         db_table = "[HumanResources].[Employee]"
-        managed = False
-        indexes = [
-            models.Index(fields=["BusinessEntityID"]),
-        ]
 
     def __str__(self):
         return f"{self.LoginID} - {self.JobTitle}"
@@ -172,83 +161,40 @@ class SalesTerritory(models.Model):
         db_table = "[Sales].[SalesTerritory]"
 
 
-# class SalesOrderHeader(BaseModel):
-#     STATUS_CHOICES = [
-#         (0, _("In process")),
-#         (1, _("Approved")),
-#         (2, _("Backordered")),
-#         (3, _("Rejected")),
-#         (4, _("Shipped")),
-#         (5, _("Cancelled")),
-#     ]
+class SalesOrderHeader(BaseModel):
+    STATUS_CHOICES = [
+        (0, _("In process")),
+        (1, _("Approved")),
+        (2, _("Backordered")),
+        (3, _("Rejected")),
+        (4, _("Shipped")),
+        (5, _("Cancelled")),
+    ]
 
-#     ONLINE_ORDER_FLAG_CHOICES = [
-#         (0, _("Order placed by sales person")),
-#         (1, _("Order placed online by customer")),
-#     ]
+    SalesOrderID = models.AutoField(primary_key=True)
+    OrderDate = models.DateTimeField(auto_now_add=True)
+    Status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
+    SalesOrderNumber = models.CharField(max_length=50, blank=True, editable=False)
+    PurchaseOrderNumber = models.CharField(max_length=50, null=True, blank=True)
+    AccountNumber = models.CharField(max_length=50, null=True, blank=True)
+    SalesPersonID = models.ForeignKey(
+        SalesPerson,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        db_column="SalesPersonID",
+    )
+    BillToAddressID = models.ForeignKey(
+        Address, on_delete=models.CASCADE, db_column="BillToAddressID"
+    )
+    SubTotal = models.DecimalField(max_digits=19, decimal_places=4, default=0.00)
+    TaxAmt = models.DecimalField(max_digits=19, decimal_places=4, default=0.00)
+    Freight = models.DecimalField(max_digits=19, decimal_places=4, default=0.00)
+    TotalDue = models.DecimalField(max_digits=19, decimal_places=4, editable=False)
+    ModifiedDate = models.DateTimeField(auto_now=True)
 
-#     SalesOrderID = models.AutoField(primary_key=True)
-#     RevisionNumber = models.PositiveSmallIntegerField(default=0)
-#     OrderDate = models.DateTimeField(auto_now_add=True)
-#     DueDate = models.DateTimeField()
-#     ShipDate = models.DateTimeField(null=True, blank=True)
-#     Status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
-#     OnlineOrderFlag = models.BooleanField(default=True)
-#     SalesOrderNumber = models.CharField(max_length=50, blank=True, editable=False)
-#     PurchaseOrderNumber = models.CharField(max_length=50, null=True, blank=True)
-#     AccountNumber = models.CharField(max_length=50, null=True, blank=True)
-#     CustomerID = models.ForeignKey(
-#         Customer, on_delete=models.CASCADE, db_column="CustomerID"
-#     )
-#     SalesPersonID = models.ForeignKey(
-#         SalesPerson,
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         db_column="SalesPersonID",
-#     )
-#     TerritoryID = models.ForeignKey(
-#         SalesTerritory,
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         db_column="TerritoryID",
-#     )
-#     BillToAddressID = models.ForeignKey(
-#         Address, on_delete=models.CASCADE, db_column="BillToAddressID"
-#     )
-#     ShipToAddressID = models.ForeignKey(
-#         Address, on_delete=models.CASCADE, db_column="ShipToAddressID"
-#     )
-#     ShipMethodID = models.ForeignKey(
-#         "ShipMethod", on_delete=models.CASCADE, db_column="ShipMethodID"
-#     )
-#     CreditCardID = models.ForeignKey(
-#         "CreditCard",
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         db_column="CreditCardID",
-#     )
-#     CreditCardApprovalCode = models.CharField(
-#         max_length=15, null=True, blank=True, db_column="CreditCardApprovalCode"
-#     )
-#     CurrencyRateID = models.ForeignKey(
-#         "CurrencyRate",
-#         null=True,
-#         blank=True,
-#         on_delete=models.SET_NULL,
-#         db_column="CurrencyRateID",
-#     )
-#     SubTotal = models.DecimalField(max_digits=19, decimal_places=4, default=0.00)
-#     TaxAmt = models.DecimalField(max_digits=19, decimal_places=4, default=0.00)
-#     Freight = models.DecimalField(max_digits=19, decimal_places=4, default=0.00)
-#     TotalDue = models.DecimalField(max_digits=19, decimal_places=4, editable=False)
-#     Comment = models.TextField(max_length=128, null=True, blank=True)
-#     ModifiedDate = models.DateTimeField(auto_now=True)
-
-#     class Meta:
-#         db_table = "[Sales].[SalesOrderHeader]"
+    class Meta:
+        db_table = "[Sales].[SalesOrderHeader]"
 
 
 class VEmployee(BaseModel):
@@ -257,7 +203,6 @@ class VEmployee(BaseModel):
     FirstName = models.CharField(max_length=50)
     MiddleName = models.CharField(max_length=50, null=True, blank=True)
     LastName = models.CharField(max_length=50)
-    Suffix = models.CharField(max_length=10, null=True, blank=True)
     JobTitle = models.CharField(max_length=50)
     PhoneNumber = models.CharField(max_length=25, null=True, blank=True)
     PhoneNumberType = models.CharField(max_length=50, null=True, blank=True)
@@ -269,7 +214,6 @@ class VEmployee(BaseModel):
     StateProvinceName = models.CharField(max_length=50)
     PostalCode = models.CharField(max_length=15)
     CountryRegionName = models.CharField(max_length=50)
-    AdditionalContactInfo = models.TextField(null=True, blank=True)
 
     class Meta:
         db_table = "[HumanResources].[vEmployee]"
