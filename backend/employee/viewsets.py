@@ -41,6 +41,7 @@ class SalesOrderHeaderViewSet(viewsets.ModelViewSet):
     serializer_class = SalesOrderHeaderSerializer
     filter_backends = [SearchFilter, DjangoFilterBackend, OrderingFilter]
     filterset_class = SalesOrderFilter
+    search_fields = ["AccountNumber", "SalesOrderNumber"]
 
 
 class PersonViewSet(viewsets.ModelViewSet):
