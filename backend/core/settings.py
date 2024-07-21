@@ -153,7 +153,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://127.0.0.1:9000",
     "http://localhost:3000",
     "https://specsources.vercel.app",
-    "http://3.92.134.173:9000",
+    "http://54.174.178.253:9000",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
