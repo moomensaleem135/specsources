@@ -13,10 +13,10 @@ services:
     entrypoint: [ "/var/opt/mssql/scripts/restore.sh" ]
     healthcheck:
       test: [ "CMD", "test", "-f", "/var/opt/mssql/restore_done" ]
-      interval: 30s
+      interval: 60s
       retries: 5
       start_period: 60s
-      timeout: 10s
+      timeout: 30s
 
   backend:
     image: meissasoft/specsources_backend:latest
