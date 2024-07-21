@@ -43,17 +43,23 @@ router = routers.DefaultRouter()
 router.registry.extend(employee_routers.registry)
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("specsources/admin/", admin.site.urls),
     path(
-        "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
+        "specsources/swagger<format>/",
+        schema_view.without_ui(cache_timeout=0),
+        name="schema-json",
     ),
     path(
-        "swagger/",
+        "specsources/swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("api/", include("rest_framework.urls")),
-    path("api/", include(router.urls)),
-    path("api/", include("employee.urls")),
+    path(
+        "specsources/redoc/",
+        schema_view.with_ui("redoc", cache_timeout=0),
+        name="schema-redoc",
+    ),
+    path("specsources/api/", include("rest_framework.urls")),
+    path("specsources/api/", include(router.urls)),
+    path("specsources/api/", include("employee.urls")),
 ]
