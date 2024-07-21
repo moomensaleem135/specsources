@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-j^y^cbwu+!g56t(_ym9d_zpf@6*04alm1&ojhn_7m3)vyoqr+w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -146,7 +146,16 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 50,
 }
 
-CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000", "http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "https://specsources.vercel.app",
+    "http://3.92.134.173:9000",
+]
 
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:8000", "http://localhost:3000"]
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:3000",
+    "https://specsources.vercel.app",
+]
