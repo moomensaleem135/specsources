@@ -34,7 +34,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
           iconClassName="w-6 h-6 text-primary"
           onChange={onSearchChange}
           inputClassName="!h-6"
-          className="!pt-3 pb-0"
+          className="!pt-3 pb-0 dark:bg-background dark:text-white"
         />
       </div>
       <div className="col-span-6 md:col-span-3">

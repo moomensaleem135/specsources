@@ -44,7 +44,7 @@ export const SelectJobTitles: React.FC<SelectJobTitlesProps> = ({
       <Select onValueChange={handleChange} value={selectedJobTitle}>
         <SelectTrigger
           iconColor="stroke-primary"
-          className="shadow-none bg-foreground text-sm"
+          className="shadow-none bg-foreground dark:bg-background text-sm"
         >
           <SelectValue placeholder="Job Title" />
         </SelectTrigger>

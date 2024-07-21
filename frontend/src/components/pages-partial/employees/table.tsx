@@ -8,17 +8,20 @@ import AgGridTable from '@/components/ui/ag-table';
 import { IEmployee } from '@/lib/types';
 import { useRouter } from 'next/navigation';
 import { employeesUrl } from '@/constants';
+import { SpinnerIcon } from '@/assets/icons';
 
 interface IEmployeesTable {
   enablePagination?: boolean;
   customHeight?: number;
   employees: IEmployee[];
+  loading: boolean;
 }
 
 const EmployeesTable: React.FC<IEmployeesTable> = ({
   enablePagination = false,
   customHeight,
   employees,
+  loading,
 }) => {
   // states
   const [page, setPage] = useState<number>(1);
@@ -70,6 +73,9 @@ const EmployeesTable: React.FC<IEmployeesTable> = ({
       onPageChange={setPage}
       customHeight={customHeight}
       onRowClicked={onRowClicked}
+      loadingCellRenderer={<SpinnerIcon />}
+      suppressLoadingOverlay={true}
+      
     />
   );
 };

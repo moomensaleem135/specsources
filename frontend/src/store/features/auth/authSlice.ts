@@ -1,6 +1,10 @@
+import { IUser } from '@/lib/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { IInitialState, IUser } from './types';
+interface IInitialState {
+  user: IUser | null | undefined;
+  isAuthenticated: boolean;
+}
 
 const initialState: IInitialState = {
   user: undefined,

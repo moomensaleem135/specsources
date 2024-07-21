@@ -48,15 +48,15 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
           pageSize={Number(pageSize)}
         />
       </div>
-      <div className="col-span-2 flex justify-end items-center">
-        <p className="mr-2 w-100 text-headingColor font-normal text-sm hidden sm:flex">
+      <div className="col-span-2 flex justify-end pt-1 ">
+        <p className="mr-2 mt-2 text-headingColor font-normal text-sm hidden sm:flex">
           Result Per Page:
         </p>
-        <div className="w-15 mt-2">
+        <div className="w-15 ">
           <Select onValueChange={handlePageSizeChange} value={pageSize}>
             <SelectTrigger
               iconColor="fill-border stroke-border ml-3"
-              className="border !border-brand h-8 px-2 shadow-none focus:ring-0 focus:ring-ring focus:ring-offset-0 text-sm "
+              className="border !border-brand h-10 px-2 shadow-none focus:ring-0 focus:ring-ring focus:ring-offset-0 text-sm "
             >
               <SelectValue placeholder={pageSize} />
             </SelectTrigger>

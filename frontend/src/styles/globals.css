@@ -31,8 +31,8 @@
   }
 
   .dark {
-    --background: hsl(0, 0%, 96%);
-    --foreground: hsl(0, 0%, 100%);
+    --background: hsl(0, 0%, 0%);
+    --foreground: hsl(0, 0%, 100%);;
 
     --primary: hsl(4, 67%, 48%);
     --primary-hover: hsl(4, 97%, 42%);
@@ -52,7 +52,7 @@
     /* AG Grid colors for light mode */
     --ag-header-foreground: var(--headingColor);
     --ag-header-background: var(--background);
-    --ag-background: var(--foreground);
+    --ag-background: var(--background);
     --ag-odd-row-background: var(--background);
     --ag-row-hover: var(--hover);
   }

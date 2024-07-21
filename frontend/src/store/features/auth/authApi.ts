@@ -4,11 +4,14 @@ import toast from 'react-hot-toast';
 import { apiSlice } from '../api/apiSlice';
 import { userLoggedIn, userLoggedOut } from './authSlice';
 import { jwtExpMsg } from '@/configs/constants';
-import { ILoginResponse, IUser } from './types';
+import { ILoginResponse, IUser } from '@/lib/types';
 
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<ILoginResponse, { email: string; password: string }>({
+    login: builder.mutation<
+      ILoginResponse,
+      { email: string; password: string }
+    >({
       query: (data) => ({
         url: '/api/login', // Ensure the URL is correct
         method: 'POST',

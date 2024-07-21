@@ -44,7 +44,7 @@ export const SelectStatus: React.FC<SelectStatusProps> = ({
       <Select onValueChange={handleChange} value={selectedStatus}>
         <SelectTrigger
           iconColor="stroke-primary"
-          className="shadow-none bg-foreground text-sm"
+          className="shadow-none bg-foreground dark:bg-background text-sm"
         >
           <SelectValue placeholder="Select Status" />
         </SelectTrigger>

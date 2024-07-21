@@ -41,7 +41,7 @@ const IconInput = React.forwardRef<HTMLInputElement, IconInputProps>(
           error
             ? 'border-destructive'
             : 'focus-within:border-primary focus-within:!bg-brand-medium',
-          'border-solid  ',
+          'border-solid ',
           className
         )}
       >

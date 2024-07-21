@@ -1,26 +1,42 @@
 'use client';
-import React from 'react';
+import React, { useMemo } from 'react';
 import AppLayout from '@/components/layouts/AppLayout';
 import EmployeesTable from './table';
+import { FilterOptions } from './FilterOptions';
+import useWindowSize from '@/hooks/use-window-size';
 import {
-  generateMockDepartments,
+  useFetchEmployeesQuery,
+  useFetchDepartmentsQuery,
+  useFetchJobTitlesQuery,
+} from '@/store/features/company/companyApi';
+import {
   generateMockEmployees,
+  generateMockDepartments,
   generateMockJobTitles,
 } from '@/lib/mocks';
 
-import { FilterOptions } from './FilterOptions';
-import useWindowSize from '@/hooks/use-window-size';
-
-const departments = generateMockDepartments(5);
-const jobTitles = generateMockJobTitles(5);
-const employees = generateMockEmployees(200);
-
 export default function PartialEmployees() {
   // states
-  const [selectedDepartment, setSelectedDepartment] =
-    React.useState<string>('');
+  const [selectedDepartment, setSelectedDepartment] = React.useState<string>('');
   const [selectedJobTitle, setSelectedJobTitle] = React.useState<string>('');
   const [searchedText, setSearchedText] = React.useState<string>('');
+
+  // rtq
+  const {
+    data: employeesData,
+    isLoading: employeesLoading,
+    error: employeesError,
+  } = useFetchEmployeesQuery({ page: 1, pageSize: 50 });
+  const {
+    data: departmentsData,
+    isLoading: departmentsLoading,
+    error: departmentsError,
+  } = useFetchDepartmentsQuery();
+  const {
+    data: jobTitlesData,
+    isLoading: jobTitlesLoading,
+    error: jobTitlesError,
+  } = useFetchJobTitlesQuery();
 
   const { isMobile } = useWindowSize();
 
@@ -36,6 +52,19 @@ export default function PartialEmployees() {
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchedText(e.target.value);
   };
+
+  const employees = useMemo(
+    () => (employeesError ? generateMockEmployees(50) : employeesData || []),
+    [employeesData, employeesError]
+  );
+  const departments = useMemo(
+    () => (departmentsError ? generateMockDepartments(5) : departmentsData || []),
+    [departmentsData, departmentsError]
+  );
+  const jobTitles = useMemo(
+    () => (jobTitlesError ? generateMockJobTitles(5) : jobTitlesData || []),
+    [jobTitlesData, jobTitlesError]
+  );
 
   return (
     <AppLayout title="Employees">
@@ -53,6 +82,7 @@ export default function PartialEmployees() {
               enablePagination
               customHeight={isMobile ? 590 : 700}
               employees={employees}
+              loading={employeesLoading}
             />
           </div>
         </div>

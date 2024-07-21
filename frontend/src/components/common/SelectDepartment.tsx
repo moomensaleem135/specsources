@@ -46,7 +46,7 @@ export const SelectDepartment: React.FC<SelectDepartmentProps> = ({
       <Select onValueChange={handleChange} value={selectedDepartment}>
         <SelectTrigger
           iconColor="stroke-primary"
-          className="shadow-none bg-foreground text-sm"
+          className="shadow-none bg-foreground dark:bg-background text-sm"
         >
           <SelectValue placeholder="Department" />
         </SelectTrigger>

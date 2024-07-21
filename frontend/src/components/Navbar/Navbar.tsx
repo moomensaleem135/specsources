@@ -11,10 +11,7 @@ interface INavbar {
 
 function Navbar({ children, title }: INavbar) {
   return (
-    <div
-      className="flex w-full flex-col justify-between pb-8"
-      style={{ height: '100dvh' }}
-    >
+    <div className="flex w-full flex-col justify-between mb-4">
       <div className="flex flex-col w-full px-8">
         <TopNavbar title={title} />
         <div
@@ -25,19 +22,17 @@ function Navbar({ children, title }: INavbar) {
           {children}
         </div>
       </div>
-      <div className="w-full px-5">
-        <div className="flex justify-between w-full ">
-          <div>
-            <p className="text-accent font-normal text-sm ">
-              © specsources 2024
-            </p>
-          </div>
-          <div className="flex flex-row gap-x-1 items-center">
-            <EmailIcon className="fill-transparent text-accent mt-0.5" />
-            <p className="text-accent font-normal text-sm">
-              help@specsources.com
-            </p>
-          </div>
+      <div className="grid grid-cols-12 px-5 gap-y-3 mt-3">
+        <div className="col-span-6">
+          <p className="text-accent font-normal text-sm ">
+            © specsources 2024
+          </p>
+        </div>
+        <div className="col-span-6 flex flex-row gap-x-1 items-center justify-end">
+          <EmailIcon className="fill-transparent text-accent mt-0.5" />
+          <p className="text-accent font-normal text-sm">
+            help@specsources.com
+          </p>
         </div>
       </div>
     </div>
