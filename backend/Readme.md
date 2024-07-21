@@ -27,49 +27,18 @@ This project is a Django-based API for retrieving sales order statistics, specif
     cd backend
     ```
 
-2. **Create and activate a virtual environment:**
+2. **Download the AdventureWorks2022.bak file:**
 
     ```sh
-    python -m venv venv
-    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2022.bak
+
+    Save the file in backend/scripts/
     ```
 
-3. **Install the dependencies:**
+3. **Run the development server:**
 
     ```sh
-    pip install -r requirements.txt
-    ```
-
-4. **Set up your database configuration:**
-
-    Update the `DATABASES` setting in `settings.py` to match your SQL Server configuration.
-
-    ```python
-    DATABASES = {
-        'default': {
-            'ENGINE': 'mssql',
-            'NAME': 'AdventureWorks2022',
-            'USER': 'your_db_username',
-            'PASSWORD': 'your_db_password',
-            'HOST': 'your_db_host',
-            'PORT': '',  # Set to your DB port if necessary
-            'OPTIONS': {
-                'driver': 'ODBC Driver 17 for SQL Server',
-            },
-        }
-    }
-    ```
-
-5. **Apply migrations:**
-
-    ```sh
-    python manage.py migrate
-    ```
-
-6. **Run the development server:**
-
-    ```sh
-    python manage.py runserver
+    docker-compose up -d
     ```
 
 ## Swagger Documentation
