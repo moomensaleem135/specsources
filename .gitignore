@@ -42,3 +42,4 @@ backend/employee/__pycache__/*
 frontend/.next/*
 frontend/node_modules/*
 backend/employee/migrations/__pycache__/*
+backend/scripts/AdventureWorks2022.bak

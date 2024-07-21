@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -83,7 +85,8 @@ DATABASES = {
         "NAME": "AdventureWorks2022",
         "USER": "sa",
         "PASSWORD": ",X<62NP*dmt]`I@=",
-        "HOST": r"DESKTOP-D3IKV9A\SQLEXPRESS",
+        "HOST": "db",
+        "PORT": "1433",
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server"},
     }
 }

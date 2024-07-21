@@ -1,0 +1,38 @@
+services:
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      SA_PASSWORD: ",X<62NP*dmt]`I@="
+      ACCEPT_EULA: "Y"
+    volumes:
+      - ./scripts:/var/opt/mssql/scripts
+      - ./scripts/AdventureWorks2022.bak:/var/opt/mssql/backup/AdventureWorks2022.bak
+    ports:
+      - "1433:1433"
+    entrypoint: [ "/bin/bash", "/var/opt/mssql/scripts/restore.sh" ]
+    healthcheck:
+      test: [ "CMD", "test", "-f", "/var/opt/mssql/restore_done" ]
+      interval: 30s
+      retries: 5
+      start_period: 60s
+      timeout: 10s
+
+  backend:
+    image: meissasoft/specsources_backend:latest
+    build: .
+    command: python manage.py runserver 0.0.0.0:9000
+    container_name: backend
+    volumes:
+      - .:/app
+    ports:
+      - "9000:9000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_NAME=AdventureWorks2022
+      - DATABASE_USER=sa
+      - DATABASE_PASSWORD=,X<62NP*dmt]`I@=
+      - DATABASE_HOST=db
+      - DATABASE_PORT=1433
