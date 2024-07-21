@@ -81,8 +81,8 @@ DATABASES = {
     "default": {
         "ENGINE": "mssql",
         "NAME": "AdventureWorks2022",
-        "USER": "admin",
-        "PASSWORD": "1234",
+        "USER": "sa",
+        "PASSWORD": ",X<62NP*dmt]`I@=",
         "HOST": r"DESKTOP-D3IKV9A\SQLEXPRESS",
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server"},
     }
