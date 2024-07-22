@@ -1,4 +1,12 @@
-from .models import Department, Address, Employee, Person, VEmployee, SalesOrderHeader
+from .models import (
+    Department,
+    Address,
+    Employee,
+    Person,
+    VEmployee,
+    SalesOrderHeader,
+    EmployeeDepartment,
+)
 from rest_framework import serializers
 
 
@@ -41,9 +49,21 @@ class PersonSerializer(serializers.ModelSerializer):
 
 
 class VEmployeeSerializer(serializers.ModelSerializer):
+    Department = serializers.SerializerMethodField()
+
     class Meta:
         model = VEmployee
         fields = "__all__"
+
+    def get_Department(self, obj):
+        try:
+            # Assuming there's a way to fetch related Department instance by BusinessEntityID
+            department = EmployeeDepartment.objects.get(
+                BusinessEntityID=obj.BusinessEntityID
+            )
+            return department.Department
+        except Department.DoesNotExist:
+            return None
 
 
 class VEmployeeDetailSerializer(serializers.ModelSerializer):
