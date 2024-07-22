@@ -1,3 +1,4 @@
+'use client';
 import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { AgGridReact, AgGridReactProps } from '@ag-grid-community/react';
 import { ColDef, ModuleRegistry } from '@ag-grid-community/core';
@@ -15,7 +16,7 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
 interface AgGridTableProps extends AgGridReactProps {
   columns: ColDef[];
   rowData: any[];
-  totalRows: number;
+  totalRows?: number;
   pageSize?: string;
   setPageSize?: (size: string) => void;
   currentPage: number;
@@ -42,7 +43,7 @@ const AgGridTable: React.FC<AgGridTableProps> = ({
 }) => {
   const gridContainerRef = useRef<HTMLDivElement>(null);
   const [gridHeight, setGridHeight] = useState<string>('100%'); // Default height
-  const [showPageination, setShowPagination] = useState<boolean>(false);
+  const [showPagination, setShowPagination] = useState<boolean>(false);
   const gridRef = useRef<AgGridReact>(null);
 
   const defaultColDef = useMemo<ColDef>(
@@ -107,16 +108,14 @@ const AgGridTable: React.FC<AgGridTableProps> = ({
         />
       </div>
       <Separator />
-      {enablePagination && showPageination && (
-        <PaginationControls
-          pageSize={pageSize}
-          setPageSize={setPageSize}
-          currentPage={currentPage}
-          setCurrentPage={handlePage}
-          totalRows={totalRows}
-          pageClassName={pageClassName}
-        />
-      )}
+      <PaginationControls
+        pageSize={pageSize}
+        setPageSize={setPageSize}
+        currentPage={currentPage}
+        setCurrentPage={handlePage}
+        totalRows={totalRows}
+        pageClassName={pageClassName}
+      />
     </div>
   );
 };

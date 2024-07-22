@@ -14,6 +14,8 @@ interface FilterOptionsProps {
   onDateRangeChange: (value: DateValueType) => void;
   onClearFilter: () => void;
   onSearch: () => void;
+  selectedStatus: string | undefined;
+  searchText: string;
 }
 
 export const FilterOptions: React.FC<FilterOptionsProps> = ({
@@ -23,6 +25,8 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
   onDateRangeChange,
   onClearFilter,
   onSearch,
+  selectedStatus,
+  searchText,
 }) => {
   return (
     <div className="grid grid-cols-12 gap-2 items-center ">
@@ -36,6 +40,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
           label={''}
           onChange={onSearchChange}
           iconClassName="w-6 h-6 mr-0 fill-transparent "
+          value={searchText}
         />
       </div>
       <div className="col-span-12 md:col-span-2">
@@ -49,14 +54,17 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
               <ArrowDownIcon className="h-4 w-4 text-primary" />
             )}
             inputClassName={
-              'relative duration-300 py-[7px] pl-4 pr-14 w-full border border-border rounded-lg placeholder-placeholder text-headingColor text-base font-medium !bg-transparent focus:border-primary focus:outline-0 '
+              'relative duration-300 py-[7px] pl-4 pr-14 w-full border border-border rounded-lg placeholder-placeholder placeholder:text-base text-headingColor text-base  !bg-transparent focus:border-primary focus:outline-0 '
             }
             primaryColor="red"
           />
         </div>
       </div>
       <div className="col-span-12 md:col-span-2">
-        <SelectStatus onStatusChange={onStatusChange} />
+        <SelectStatus
+          onStatusChange={onStatusChange}
+          initialStatus={selectedStatus}
+        />
       </div>
       <div className="col-span-12 md:col-span-3">
         <div className="w-full flex items-center gap-x-2 ">

@@ -11,14 +11,14 @@ import {
 // Define the base queries for different base URLs
 const baseQueryWithAuth = fetchBaseQuery({
   baseUrl: '/',
-  credentials: 'include',
+  credentials: 'same-origin',
 });
 
 const baseQueryWithCompany = fetchBaseQuery({
   baseUrl: 'http://54.174.178.253/specsources',
-  credentials: 'include',
+  credentials: 'same-origin',
   prepareHeaders: (headers) => {
-    headers.set('Content-Type', 'application/json');
+    headers.set('Accept', 'application/*');
     return headers;
   },
 });

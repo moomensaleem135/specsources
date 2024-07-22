@@ -1,34 +1,39 @@
 'use client';
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import AppLayout from '@/components/layouts/AppLayout';
 import EmployeesTable from './table';
 import { FilterOptions } from './FilterOptions';
 import useWindowSize from '@/hooks/use-window-size';
-import { useFetchEmployeesQuery } from '@/store/features/company/companyApi';
+import { useLazyFetchEmployeesQuery } from '@/store/features/company/companyApi';
 import { generateMockEmployees } from '@/lib/mocks';
 import { IEmployeesRequestParams } from '@/lib/types';
 
 export default function PartialEmployees() {
   // states
-  const [selectedDepartment, setSelectedDepartment] =
-    React.useState<string>('');
-  const [selectedJobTitle, setSelectedJobTitle] = React.useState<string>('');
-  const [searchedText, setSearchedText] = React.useState<string>('');
-  const [page, setPage] = React.useState<number>(1);
+  const [selectedDepartment, setSelectedDepartment] = useState<string>('');
+  const [selectedJobTitle, setSelectedJobTitle] = useState<string>('');
+  const [searchedText, setSearchedText] = useState<string>('');
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<string>('20');
 
   // args
-  const queryArgs: IEmployeesRequestParams = {
-    search: searchedText,
-    page,
-    JobTitle: selectedJobTitle,
-  };
+  const queryArgs: IEmployeesRequestParams = useMemo(
+    () => ({
+      offset: page,
+      limit: Number(pageSize),
+      search: searchedText,
+      JobTitle: selectedJobTitle,
+      Department: selectedDepartment,
+    }),
+    [page, pageSize, searchedText, selectedDepartment, selectedJobTitle]
+  );
 
   // rtq
-  const {
-    data: employeesData,
-    isLoading: employeesLoading,
-    error: employeesError,
-  } = useFetchEmployeesQuery(queryArgs);
+
+  const [
+    fetchEmployees,
+    { data: employeesData, isLoading: employeesLoading, error: employeesError },
+  ] = useLazyFetchEmployeesQuery();
 
   const { isMobile } = useWindowSize();
 
@@ -52,6 +57,32 @@ export default function PartialEmployees() {
     [employeesData, employeesError]
   );
 
+  const onSearch = useCallback(() => {
+    fetchEmployees(queryArgs);
+  }, [fetchEmployees, queryArgs]);
+
+  const onClearFilters = useCallback(() => {
+    setSelectedDepartment('');
+    setSelectedJobTitle('');
+    setSearchedText('');
+    setPage(1);
+    fetchEmployees({
+      Department: '',
+      JobTitle: '',
+      limit: 20,
+      offset: 1,
+      search: '',
+    });
+  }, [fetchEmployees, queryArgs]);
+
+  useEffect(() => {
+    fetchEmployees(queryArgs);
+  }, []);
+
+  useEffect(() => {
+    fetchEmployees(queryArgs);
+  }, [page, pageSize]);
+
   return (
     <AppLayout title="Employees">
       <div className="flex flex-col self-stretch w-full gap-y-4 bg-foreground rounded-2xl border border-border">
@@ -59,6 +90,11 @@ export default function PartialEmployees() {
           onDepartmentChange={onDepartmentChange}
           onJobtitleChange={onJobtitleChange}
           onSearchChange={onSearchChange}
+          searchText={searchedText}
+          selectedDepartment={selectedDepartment}
+          selectedJobTitle={selectedJobTitle}
+          onSearch={onSearch}
+          onClearFilter={onClearFilters}
         />
         <div className="grid grid-cols-12 w-full gap-4">
           <div className="col-span-12 h-[660px] md:h-[750px]">
@@ -69,6 +105,9 @@ export default function PartialEmployees() {
               loading={employeesLoading}
               page={page}
               setPage={setPage}
+              totalRows={employeesData?.count}
+              pageSize={pageSize}
+              setPageSize={setPageSize}
             />
           </div>
         </div>

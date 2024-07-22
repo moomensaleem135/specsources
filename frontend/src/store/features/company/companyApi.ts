@@ -8,7 +8,6 @@ import {
   IDepartmentResponse,
   IJobTitleResponse,
   ISales,
-  IStatus,
   IPaginatedResponse,
   ISalesRequestParams,
   IEmployeesRequestParams,
@@ -18,20 +17,14 @@ import {
 export const companyApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchEmployees: builder.query<IEmployeeResponse, IEmployeesRequestParams>({
-      query: ({ page, search, JobTitle }) => ({
-        url: `/api/vemployee${page ? `?page=${page}` : ''}${search ? `&search=${search}` : ''}${JobTitle ? `&JobTitle=${JobTitle}` : ''}`,
+      query: ({ offset, search, JobTitle, Department, limit }) => ({
+        url: `/api/vemployee${offset ? `?offset=${offset}` : ''}${limit ? `&limit=${limit}` : ''}${search ? `&search=${search}` : ''}${JobTitle ? `&JobTitle=${JobTitle}` : ''}${Department ? `&Department=${Department}` : ''}`,
         method: 'GET',
       }),
       providesTags: ['Employees'],
       keepUnusedDataFor: 600,
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
-      },
-      forceRefetch({ currentArg, previousArg }) {
-        if (!previousArg || currentArg?.page === 0) {
-          return true;
-        }
-        return currentArg?.page !== previousArg.page;
       },
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
@@ -105,8 +98,8 @@ export const companyApi = apiSlice.injectEndpoints({
     }),
 
     fetchSales: builder.query<IPaginatedResponse<ISales>, ISalesRequestParams>({
-      query: ({ page, Status, search, start_date, end_date }) => ({
-        url: `/api/salesorderheader?${page ? `page=${page}` : ''}${Status ? `&Status=${Status}` : ''}${search ? `&search=${search}` : ''}${start_date ? `&start_date=${start_date}` : ''}${end_date ? `&end_date=${end_date}` : ''}`,
+      query: ({ offset, limit, Status, search, start_date, end_date }) => ({
+        url: `/api/salesorderheader/${offset ? `?offset=${offset}` : ''}${limit ? `?limit=${limit}` : ''}${Status ? `&Status=${Status}` : ''}${search ? `&search=${search}` : ''}${start_date ? `&start_date=${start_date}` : ''}${end_date ? `&end_date=${end_date}` : ''}`,
         method: 'GET',
       }),
       providesTags: ['Sales'],
@@ -164,6 +157,7 @@ export const companyApi = apiSlice.injectEndpoints({
 export const {
   useFetchEmployeesQuery,
   useFetchEmployeeQuery,
+  useLazyFetchEmployeesQuery,
   useUpdateEmployeeMutation,
   useFetchDepartmentsQuery,
   useFetchJobTitlesQuery,

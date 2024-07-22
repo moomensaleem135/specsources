@@ -15,7 +15,7 @@
     --subHeadingColor: hsla(206, 3%, 59%, 1);
 
     --accent: hsl(206, 3%, 59%);
-    --placeholder: hsla(240, 2%, 25%, 0.2);
+    --placeholder: hsla(240, 2%, 25%, 1);
 
     --border: hsla(240, 2%, 25%, 0.2);
     --input: hsla(240, 2%, 25%, 1);
@@ -32,7 +32,7 @@
 
   .dark {
     --background: hsl(0, 0%, 0%);
-    --foreground: hsl(0, 0%, 100%);;
+    --foreground: hsl(0, 0%, 100%);
 
     --primary: hsl(4, 67%, 48%);
     --primary-hover: hsl(4, 97%, 42%);
@@ -42,7 +42,7 @@
     --subHeadingColor: hsla(206, 3%, 59%, 1);
 
     --accent: hsl(206, 3%, 59%);
-    --placeholder: hsla(240, 2%, 25%, 0.2);
+    --placeholder: hsla(240, 2%, 25%, 1);
 
     --border: hsla(240, 2%, 25%, 0.2);
     --input: hsla(240, 2%, 25%, 1);

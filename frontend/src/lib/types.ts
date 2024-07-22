@@ -9,9 +9,11 @@ export interface IconBaseProps extends React.SVGAttributes<SVGElement> {
 }
 
 export interface IEmployeesRequestParams {
-  page: number;
+  offset: number;
+  limit: number;
   search: string;
   JobTitle: string;
+  Department: string;
 }
 
 export interface IEmployee {
@@ -31,7 +33,7 @@ export interface IEmployee {
   StateProvinceName: string;
   PostalCode: string;
   CountryRegionName: string;
-  Birthday?: string;
+  BirthDate?: string;
 }
 
 export interface IDepartment {
@@ -52,11 +54,12 @@ export interface IStatus {
 export type IconType = (_props: IconBaseProps) => JSX.Element;
 
 export interface ISalesRequestParams {
-  page?: number;
   Status?: string;
   start_date?: string;
   end_date?: string;
   search?: string;
+  offset: number;
+  limit: number;
 }
 
 export interface ISalesInfo {

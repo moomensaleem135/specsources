@@ -1,5 +1,5 @@
 import { ChevronRightIcon, ChevronLeftIcon } from '@/assets/icons';
-import React, { useCallback, useState } from 'react';
+import React, { memo, useCallback } from 'react';
 
 interface ButtonProps {
   content: React.ReactNode;
@@ -154,24 +154,22 @@ const PageNumbers: React.FC<PageNumbersProps> = ({
   currentPage,
   pageSize,
 }) => {
-  const [pageIndex, setPageIndex] = useState<number>(1);
   let pageCount = 0;
-  if (pageSize) {
+  if (pageSize && length) {
     pageCount = Math.ceil(length / pageSize);
   }
 
   const onClickGoTo = (i: number) => {
-    setPageIndex(i);
     if (gotoPage) gotoPage(i);
   };
 
   return (
     <PaginationNav
       gotoPage={onClickGoTo}
-      canPreviousPage={pageIndex > 1}
-      canNextPage={pageIndex < pageCount}
+      canPreviousPage={currentPage > 1}
+      canNextPage={currentPage < pageCount}
       pageCount={pageCount}
-      pageIndex={pageIndex}
+      pageIndex={currentPage}
       pageToken={pageToken}
       showNumbers={showNumbers}
       length={length}
@@ -181,4 +179,4 @@ const PageNumbers: React.FC<PageNumbersProps> = ({
   );
 };
 
-export default PageNumbers;
+export default memo(PageNumbers);

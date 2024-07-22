@@ -37,19 +37,29 @@ const SalesHistory: React.FC<SalesHistoryProps> = () => {
     endDate: null,
   });
   const [page, setPage] = React.useState<number>(1);
+  // states
+  const [pageSize, setPageSize] = React.useState<string>('20');
 
   const { isMobile } = useWindowSize();
 
   // args
   const queryArgs: ISalesRequestParams = useMemo(
     () => ({
-      page,
+      offset: page,
       search: searchedText,
       start_date: dateRange?.startDate as string,
       end_date: dateRange?.endDate as string,
       Status: selectedStatus,
+      limit: Number(pageSize),
     }),
-    [page, searchedText, dateRange, selectedStatus]
+    [
+      page,
+      searchedText,
+      dateRange?.startDate,
+      dateRange?.endDate,
+      selectedStatus,
+      pageSize,
+    ]
   );
 
   // rtq
@@ -77,22 +87,31 @@ const SalesHistory: React.FC<SalesHistoryProps> = () => {
   };
 
   const onSearch = useCallback(() => {
-    setPage(1); // Reset to first page on search
-    fetchSales(queryArgs); // Fetch sales with the updated query args
+    fetchSales(queryArgs);
   }, [fetchSales, queryArgs]);
 
   const onClearFilters = useCallback(() => {
     setSelectedStatus('');
     setSearchedText('');
     setDateRange({ startDate: null, endDate: null });
-    setPage(1); // Reset to first page
-    fetchSales({ page: 1 }); // Fetch sales with default query args
+    setPage(1);
+    fetchSales({
+      limit: 20,
+      offset: 1,
+      search: '',
+      start_date: '',
+      end_date: '',
+      Status: '',
+    });
   }, [fetchSales]);
 
   useEffect(() => {
-    // Fetch sales data on component mount and when queryArgs change
     fetchSales(queryArgs);
   }, []);
+
+  useEffect(() => {
+    fetchSales(queryArgs);
+  }, [page, pageSize]);
 
   // memorized sales
   const sales = useMemo(
@@ -114,6 +133,8 @@ const SalesHistory: React.FC<SalesHistoryProps> = () => {
         onDateRangeChange={onDateRangeChange}
         onSearch={onSearch}
         onClearFilter={onClearFilters}
+        selectedStatus={selectedStatus}
+        searchText={searchedText}
       />
       <SalesInfoAccordion salesInfo={salesInfo} />
       <div className="grid grid-cols-12 w-full gap-4 mt-2">
@@ -124,6 +145,9 @@ const SalesHistory: React.FC<SalesHistoryProps> = () => {
             sales={sales}
             page={page}
             setPage={setPage}
+            totalRows={salesData?.count || 0}
+            pageSize={pageSize}
+            setPageSize={setPageSize}
           />
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { ColDef } from '@ag-grid-community/core';
 
 import AgGridTable from '@/components/ui/ag-table';
@@ -17,6 +17,9 @@ interface IEmployeesTable {
   loading: boolean;
   page: number;
   setPage: React.Dispatch<number>;
+  pageSize: string;
+  setPageSize: React.Dispatch<string>;
+  totalRows?: number;
 }
 
 const columns: ColDef[] = [
@@ -53,11 +56,10 @@ const EmployeesTable: React.FC<IEmployeesTable> = ({
   loading,
   page,
   setPage,
+  totalRows,
+  pageSize,
+  setPageSize,
 }) => {
-  // states
-  const [pageSize, setPageSize] = useState<string>('20');
-  const [rowData, setRowData] = useState<IEmployee[]>([]);
-
   // router
   const router = useRouter();
 
@@ -67,27 +69,24 @@ const EmployeesTable: React.FC<IEmployeesTable> = ({
     router.push(`${employeesUrl}/details?id=${data.BusinessEntityID}`);
   };
 
-  useEffect(() => {
-    setRowData(employees);
-  }, [employees]);
-
   return (
     <AgGridTable
       columns={columns}
-      rowData={rowData}
+      rowData={employees}
       pageSize={pageSize}
       setPageSize={setPageSize}
       currentPage={page}
       setCurrentPage={setPage}
-      totalRows={employees.length}
+      totalRows={totalRows}
       enablePagination={enablePagination}
       onPageChange={setPage}
       customHeight={customHeight}
       onRowClicked={onRowClicked}
       loadingCellRenderer={<SpinnerIcon />}
       suppressLoadingOverlay={true}
+      getRowId={(params) => params.data.BusinessEntityID}
     />
   );
 };
 
-export default EmployeesTable;
+export default memo(EmployeesTable);

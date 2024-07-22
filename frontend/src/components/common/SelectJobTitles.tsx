@@ -50,6 +50,8 @@ export const SelectJobTitles: React.FC<SelectJobTitlesProps> = ({
     [jobTitlesData, jobTitlesError]
   );
 
+  console.log({ selectedJobTitle, initialJobTitle });
+
   return (
     <div className="col-span-6 md:col-span-3">
       <Select onValueChange={handleChange} value={selectedJobTitle}>

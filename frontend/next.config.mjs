@@ -2,9 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  // experimental: {
-  //   appDir: true,
-  // },
   images: {
     remotePatterns: [
       {
@@ -13,6 +10,7 @@ const nextConfig = {
       },
     ],
   },
+  trailingSlash: true,
 };
 
 export default nextConfig;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import {
   SelectItem,
@@ -15,7 +15,7 @@ interface PaginationControlsProps {
   setPageSize?: (size: string) => void;
   currentPage: number;
   setCurrentPage?: (page: number) => void;
-  totalRows: number;
+  totalRows?: number;
   pageClassName?: string;
 }
 
@@ -42,7 +42,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
     <div className={cn('grid grid-cols-12 mt-3', pageClassName)}>
       <div className="col-span-10 relative flex-wrap  w-full pb-2 sm:pb-12 pt-1 ">
         <PageNumbers
-          length={totalRows}
+          length={totalRows || 0}
           currentPage={currentPage}
           gotoPage={setCurrentPage}
           pageSize={Number(pageSize)}
@@ -74,4 +74,4 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
   );
 };
 
-export default PaginationControls;
+export default memo(PaginationControls);

@@ -31,7 +31,7 @@ const detailsSchema = z.object({
     .string()
     .email('Invalid email address')
     .min(1, 'Email is required'),
-  Birthday: z.string().min(1, 'Birthday is required'),
+  BirthDate: z.string().min(1, 'Birthday is required'),
   AddressLine1: z.string(),
   AddressLine2: z.string().optional(),
   City: z.string().min(1, 'City is required'),
@@ -61,7 +61,7 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
       LastName: employeeData?.LastName,
       MiddleName: employeeData?.MiddleName || '',
       EmailAddress: employeeData?.EmailAddress,
-      Birthday: employeeData?.Birthday,
+      BirthDate: employeeData?.BirthDate,
       AddressLine1: employeeData?.AddressLine1,
       AddressLine2: employeeData?.AddressLine2 || '',
       City: employeeData?.City,
@@ -86,19 +86,21 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
   const handleBirthDayChange = (newValue: DateValueType) => {
     setBirthDay(newValue);
     if (newValue?.startDate) {
-      form.setValue('Birthday', newValue.startDate.toString());
+      form.setValue('BirthDate', newValue.startDate.toString());
     }
   };
 
   useEffect(() => {
     if (employeeData) {
       setBirthDay({
-        startDate: employeeData.Birthday as any,
-        endDate: null,
+        startDate: employeeData.BirthDate as any,
+        endDate: employeeData.BirthDate as any,
       });
       form.reset(employeeData as any);
     }
   }, [employeeData, form]);
+
+  console.log('aa', form.getValues(), birthday);
 
   return (
     <div className="px-4 md:px-8 w-full md:w-3/4">
@@ -234,7 +236,7 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
             <div className="col-span-12 md:col-span-10 mt-2 md:mt-0">
               <FormField
                 control={form.control}
-                name="Birthday"
+                name="BirthDate"
                 render={({ field }) => (
                   <div className="w-full">
                     <FormControl>
@@ -261,7 +263,7 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                       />
                     </FormControl>
                     <FormMessage className="text-primary">
-                      {form.formState.errors.Birthday?.message}
+                      {form.formState.errors.BirthDate?.message}
                     </FormMessage>
                   </div>
                 )}
