@@ -7,30 +7,38 @@ import AgGridTable from '@/components/ui/ag-table';
 
 import { ISales } from '@/lib/types';
 
+const columns: ColDef[] = [
+  { headerName: 'Order Date', field: 'OrderDate', minWidth: 150 },
+  { headerName: 'Account #', field: 'AccountNumber', minWidth: 150 },
+  {
+    headerName: 'Bill To Address',
+    field: 'billToAddress',
+    minWidth: 150,
+    valueGetter: (params) =>
+      `${params.data.AddressLine1 || ''} ${params.data.AddressLine2 || ''} ${params.data.PostalCode || ''} ${params.data.City || ''}`.trim(),
+  },
+  { headerName: 'Status', field: 'Status', minWidth: 150 },
+  { headerName: 'Sub Total', field: 'SubTotal', minWidth: 150 },
+  { headerName: 'Tax', field: 'TaxAmt', minWidth: 150 },
+  { headerName: 'Total Amount', field: 'TotalDue', minWidth: 150 },
+];
 interface ISalesTable {
   enablePagination?: boolean;
   customHeight?: number;
   sales: ISales[];
+  page: number;
+  setPage: React.Dispatch<number>;
 }
 
 const SalesTable: React.FC<ISalesTable> = ({
   enablePagination = false,
   customHeight,
   sales,
+  page,
+  setPage,
 }) => {
-  const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<string>('20');
   const [rowData, setRowData] = useState<ISales[]>([]);
-
-  const columns: ColDef[] = [
-    { headerName: 'Order Date', field: 'orderDate', minWidth: 150 },
-    { headerName: 'Account #', field: 'accountNumber', minWidth: 150 },
-    { headerName: 'Bill To Address', field: 'billToAddress', minWidth: 150 },
-    { headerName: 'Status', field: 'status', minWidth: 150 },
-    { headerName: 'Sub Total', field: 'subTotal', minWidth: 150 },
-    { headerName: 'Tax', field: 'tax', minWidth: 150 },
-    { headerName: 'Total Amount', field: 'totalAmount', minWidth: 150 },
-  ];
 
   useEffect(() => {
     setRowData(sales);

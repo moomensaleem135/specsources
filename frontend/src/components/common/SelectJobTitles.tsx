@@ -7,37 +7,48 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { IJobTitle } from '@/lib/types';
+import { useFetchJobTitlesQuery } from '@/store/features/company/companyApi';
+import { generateMockJobTitles } from '@/lib/mocks';
+import { SpinnerIcon } from '@/assets/icons';
 
 interface SelectJobTitlesProps {
-  jobTitles: IJobTitle[];
   onJobtitleChange: (value: string) => void;
   initialJobTitle?: string;
 }
 
 export const SelectJobTitles: React.FC<SelectJobTitlesProps> = ({
-  jobTitles,
   onJobtitleChange,
   initialJobTitle,
 }) => {
-  const [jobTitleOptions, setJobTitleOptions] = React.useState<IJobTitle[]>([]);
+  // Rtq
+  const {
+    data: jobTitlesData,
+    isLoading: jobTitlesLoading,
+    error: jobTitlesError,
+  } = useFetchJobTitlesQuery();
 
+  // states
   const [selectedJobTitle, setSelectedJobTitle] = React.useState<
     string | undefined
   >(initialJobTitle);
 
-  React.useEffect(() => {
-    setJobTitleOptions(jobTitles);
-  }, [jobTitles]);
-
+  // effect to set initial
   React.useEffect(() => {
     setSelectedJobTitle(initialJobTitle);
   }, [initialJobTitle]);
 
+  // handlers
   const handleChange = (title: string) => {
     setSelectedJobTitle(title);
     onJobtitleChange(title);
   };
+
+  // memorized titles
+  const jobTitleOptions = React.useMemo(
+    () =>
+      jobTitlesError ? generateMockJobTitles(5) : jobTitlesData?.results || [],
+    [jobTitlesData, jobTitlesError]
+  );
 
   return (
     <div className="col-span-6 md:col-span-3">
@@ -49,9 +60,15 @@ export const SelectJobTitles: React.FC<SelectJobTitlesProps> = ({
           <SelectValue placeholder="Job Title" />
         </SelectTrigger>
         <SelectContent>
-          {jobTitleOptions.map((jobTitle) => (
-            <SelectItem key={jobTitle.name} value={jobTitle.value}>
-              <span>{jobTitle.name}</span>
+          {jobTitlesLoading && (
+            <div className="flex flex-row gap-x-2">
+              <span className="text-sm text-subHeadingColor">Loading</span>
+              <SpinnerIcon className="h-6 w-6" />
+            </div>
+          )}
+          {jobTitleOptions.map(({ JobTitle }) => (
+            <SelectItem key={JobTitle} value={JobTitle}>
+              <span>{JobTitle}</span>
             </SelectItem>
           ))}
         </SelectContent>

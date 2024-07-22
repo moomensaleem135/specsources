@@ -15,45 +15,56 @@ interface IEmployeesTable {
   customHeight?: number;
   employees: IEmployee[];
   loading: boolean;
+  page: number;
+  setPage: React.Dispatch<number>;
 }
+
+const columns: ColDef[] = [
+  {
+    headerName: 'Name',
+    field: 'name',
+    valueGetter: (params) =>
+      `${params.data.FirstName || ''} ${params.data.MiddleName || ''} ${params.data.LastName || ''}`.trim(),
+    minWidth: 150,
+  },
+  {
+    headerName: 'Email Address',
+    field: 'EmailAddress',
+    width: 300,
+    minWidth: 300,
+  },
+  { headerName: 'Department', field: 'StateProvinceName', minWidth: 150 },
+  { headerName: 'Job Title', field: 'JobTitle', minWidth: 150 },
+  { headerName: 'Start Date', field: 'StartData', minWidth: 150 }, // You might need to transform the date format
+  { headerName: 'Phone Number', field: 'PhoneNumber', minWidth: 150 },
+  { headerName: 'Birthday', field: 'Birthday', minWidth: 150 }, // You might need to transform the date format
+  {
+    headerName: 'Home Address',
+    field: 'AddressLine1',
+    width: 300,
+    minWidth: 300,
+  },
+];
 
 const EmployeesTable: React.FC<IEmployeesTable> = ({
   enablePagination = false,
   customHeight,
   employees,
   loading,
+  page,
+  setPage,
 }) => {
   // states
-  const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<string>('20');
   const [rowData, setRowData] = useState<IEmployee[]>([]);
 
   // router
   const router = useRouter();
 
-  const columns: ColDef[] = [
-    { headerName: 'Name', field: 'name', minWidth: 150 },
-    {
-      headerName: 'Email Address',
-      field: 'email',
-      width: 300,
-      minWidth: 300,
-    },
-    { headerName: 'Department', field: 'department', minWidth: 150 },
-    { headerName: 'Job Title', field: 'jobTitle', minWidth: 150 },
-    { headerName: 'Start Date', field: 'startData', minWidth: 150 },
-    { headerName: 'Phone Number', field: 'phoneNumber', minWidth: 150 },
-    { headerName: 'Birthday', field: 'birthday', minWidth: 150 },
-    {
-      headerName: 'Home Address',
-      field: 'homeAddress',
-      width: 300,
-      minWidth: 300,
-    },
-  ];
-
+  // handler
   const onRowClicked = (params: any) => {
-    router.push(`${employeesUrl}/details?id=${123}`);
+    const { data } = params;
+    router.push(`${employeesUrl}/details?id=${data.BusinessEntityID}`);
   };
 
   useEffect(() => {
@@ -75,7 +86,6 @@ const EmployeesTable: React.FC<IEmployeesTable> = ({
       onRowClicked={onRowClicked}
       loadingCellRenderer={<SpinnerIcon />}
       suppressLoadingOverlay={true}
-      
     />
   );
 };

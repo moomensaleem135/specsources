@@ -7,39 +7,50 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { IDepartment } from '@/lib/types';
+import { useFetchDepartmentsQuery } from '@/store/features/company/companyApi';
+import { SpinnerIcon } from '@/assets/icons';
+import { generateMockDepartments } from '@/lib/mocks';
 
 interface SelectDepartmentProps {
   onDepartmentChange: (value: string) => void;
-  departments: IDepartment[];
   initialDepartment?: string;
 }
 
 export const SelectDepartment: React.FC<SelectDepartmentProps> = ({
-  departments,
   onDepartmentChange,
   initialDepartment,
 }) => {
-  const [departmentOptions, setDepartmentOptions] = React.useState<
-    IDepartment[]
-  >([]);
+  // Rtq
+  const {
+    data: departmentsData,
+    isLoading: departmentsLoading,
+    error: departmentsError,
+  } = useFetchDepartmentsQuery();
 
+  // states
   const [selectedDepartment, setSelectedDepartment] = React.useState<
     string | undefined
   >(initialDepartment);
 
+  // effect to set initial
   React.useEffect(() => {
     setSelectedDepartment(initialDepartment);
   }, [initialDepartment]);
 
-  React.useEffect(() => {
-    setDepartmentOptions(departments);
-  }, [departments]);
-
+  // handlers
   const handleChange = (dept: string) => {
     setSelectedDepartment(dept);
     onDepartmentChange(dept);
   };
+
+  // memorized departments
+  const departmentOptions = React.useMemo(
+    () =>
+      departmentsError
+        ? generateMockDepartments(5)
+        : departmentsData?.results || [],
+    [departmentsData, departmentsError]
+  );
 
   return (
     <div className="w-full">
@@ -51,8 +62,14 @@ export const SelectDepartment: React.FC<SelectDepartmentProps> = ({
           <SelectValue placeholder="Department" />
         </SelectTrigger>
         <SelectContent>
+          {departmentsLoading && (
+            <div className="flex flex-row gap-x-2">
+              <span className="text-sm text-subHeadingColor">Loading</span>
+              <SpinnerIcon className="h-6 w-6" />
+            </div>
+          )}
           {departmentOptions.map((department) => (
-            <SelectItem key={department.name} value={department.value}>
+            <SelectItem key={department.DepartmentID} value={department.name}>
               <span>{department.name}</span>
             </SelectItem>
           ))}

@@ -6,17 +6,12 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from '@/components/ui/accordion';
+import { ISalesInfo } from '@/lib/types';
+
 import { Separator } from '../ui/seperator';
 
-interface SalesInfo {
-  averageSalesWithTax: number;
-  totalSalesWithTax: number;
-  averageSalesWithoutTax: number;
-  totalSalesWithoutTax: number;
-}
-
 interface SalesInfoAccordionProps {
-  salesInfo: SalesInfo;
+  salesInfo: ISalesInfo;
 }
 
 const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
@@ -51,7 +46,7 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
                       $ Average Sales:
                     </p>
                     <p className="font-medium text-right text-headingColor text-lg">
-                      {salesInfo.averageSalesWithTax.toFixed(2)}
+                      {salesInfo.average_sales_with_freight_and_tax?.toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -61,7 +56,7 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
                       $ Total Sales:
                     </p>
                     <p className="font-medium text-right text-headingColor text-lg">
-                      {salesInfo.totalSalesWithTax.toFixed(2)}
+                      {salesInfo.total_sales_with_freight_and_tax?.toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -80,7 +75,9 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
                       $ Average Sales:
                     </p>
                     <p className="font-medium text-right text-headingColor text-lg">
-                      {salesInfo.averageSalesWithoutTax.toFixed(2)}
+                      {salesInfo.average_sales_without_freight_and_tax?.toFixed(
+                        2
+                      )}
                     </p>
                   </div>
                 </div>
@@ -90,7 +87,9 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
                       $ Total Sales:
                     </p>
                     <p className="font-medium text-right text-headingColor text-lg">
-                      {salesInfo.totalSalesWithoutTax.toFixed(2)}
+                      {salesInfo.total_sales_without_freight_and_tax?.toFixed(
+                        2
+                      )}
                     </p>
                   </div>
                 </div>

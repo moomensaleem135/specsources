@@ -7,28 +7,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { IStatus } from '@/lib/types';
 
 interface SelectStatusProps {
-  statuses: IStatus[];
   onStatusChange: (value: string) => void;
   initialStatus?: string;
 }
 
 export const SelectStatus: React.FC<SelectStatusProps> = ({
-  statuses,
   onStatusChange,
   initialStatus,
 }) => {
-  const [statusOptions, setStatusOptions] = React.useState<IStatus[]>([]);
+  const statusOptions = ['0', '1', '2', '3', '4', '5'];
 
   const [selectedStatus, setSelectedStatus] = React.useState<
     string | undefined
   >(initialStatus);
-
-  React.useEffect(() => {
-    setStatusOptions(statuses);
-  }, [statuses]);
 
   React.useEffect(() => {
     setSelectedStatus(initialStatus);
@@ -50,8 +43,8 @@ export const SelectStatus: React.FC<SelectStatusProps> = ({
         </SelectTrigger>
         <SelectContent>
           {statusOptions.map((status) => (
-            <SelectItem key={status.name} value={status.value}>
-              <span>{status.name}</span>
+            <SelectItem key={status} value={status}>
+              <span>{status}</span>
             </SelectItem>
           ))}
         </SelectContent>

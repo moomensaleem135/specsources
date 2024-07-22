@@ -4,24 +4,25 @@ import { IconInput } from '@/components/ui/icon-input';
 
 import { ArrowDownIcon, Search } from '@/assets/icons';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
-import { IStatus } from '@/lib/types';
 import { SelectStatus } from '@/components/common/SelectStatus';
 import { Button } from '@/components/ui/button';
 
 interface FilterOptionsProps {
   onSearchChange: (val: React.ChangeEvent<HTMLInputElement>) => void;
-  statuses: IStatus[];
   onStatusChange: (value: string) => void;
   dateRange: DateValueType;
   onDateRangeChange: (value: DateValueType) => void;
+  onClearFilter: () => void;
+  onSearch: () => void;
 }
 
 export const FilterOptions: React.FC<FilterOptionsProps> = ({
   onStatusChange,
-  statuses,
   onSearchChange,
   dateRange,
   onDateRangeChange,
+  onClearFilter,
+  onSearch,
 }) => {
   return (
     <div className="grid grid-cols-12 gap-2 items-center ">
@@ -46,7 +47,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
             value={dateRange}
             onChange={onDateRangeChange}
             containerClassName={'transactions-date-range relative w-full '}
-            toggleIcon={(open) => (
+            toggleIcon={() => (
               <ArrowDownIcon className="h-4 w-4 text-primary" />
             )}
             inputClassName={
@@ -57,14 +58,17 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
         </div>
       </div>
       <div className="col-span-12 md:col-span-2">
-        <SelectStatus onStatusChange={onStatusChange} statuses={statuses} />
+        <SelectStatus onStatusChange={onStatusChange} />
       </div>
       <div className="col-span-12 md:col-span-2">
         <div className="w-full flex items-center gap-x-2 ">
-          <Button className="py-6 w-full" type="submit">
+          <Button className="py-6 w-full" type="submit" onClick={onSearch}>
             <span className="font-medium text-base">Search</span>
           </Button>
-          <Button className="py-6 w-full bg-headingColor text-white hover:bg-headingColor">
+          <Button
+            className="py-6 w-full bg-headingColor text-white hover:bg-headingColor"
+            onClick={onClearFilter}
+          >
             <span className="font-medium text-base">Clear Filter</span>
           </Button>
         </div>

@@ -4,31 +4,31 @@ import toast from 'react-hot-toast';
 import { apiSlice } from '../api/apiSlice';
 import {
   IEmployee,
-  IDepartment,
-  IJobTitle,
+  IEmployeeResponse,
+  IDepartmentResponse,
+  IJobTitleResponse,
   ISales,
   IStatus,
+  IPaginatedResponse,
+  ISalesRequestParams,
+  IEmployeesRequestParams,
+  ISalesInfo,
 } from '@/lib/types';
 
 export const companyApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    fetchEmployees: builder.query<
-      IEmployee[],
-      { page: number; pageSize: number }
-    >({
-      query: ({ page, pageSize }) => ({
-        url: `/api/employees?page=${page}&pageSize=${pageSize}`,
+    fetchEmployees: builder.query<IEmployeeResponse, IEmployeesRequestParams>({
+      query: ({ page, search, JobTitle }) => ({
+        url: `/api/vemployee?${page ? `page=${page}` : ''}${search ? `&search=${search}` : ''}&${JobTitle ? `&JobTitle=${JobTitle}` : ''}`,
         method: 'GET',
       }),
       providesTags: ['Employees'],
       keepUnusedDataFor: 600,
-      // Only have one cache entry because the arg always maps to one string
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
       },
-      // Refetch when the page arg changes
       forceRefetch({ currentArg, previousArg }) {
-        if (!previousArg || currentArg?.page == 0) {
+        if (!previousArg || currentArg?.page === 0) {
           return true;
         }
         return currentArg?.page !== previousArg.page;
@@ -38,8 +38,7 @@ export const companyApi = apiSlice.injectEndpoints({
           await queryFulfilled;
         } catch (error: any) {
           toast.error(
-            error?.error?.data?.message ||
-              'Failed to fetch employees falling Back to mock data'
+            error?.error?.data?.message || 'Failed to fetch employees'
           );
         }
       },
@@ -47,7 +46,7 @@ export const companyApi = apiSlice.injectEndpoints({
 
     fetchEmployee: builder.query<IEmployee, string>({
       query: (id) => ({
-        url: `/api/employees/${id}`,
+        url: `/api/vemployee/${id}`,
         method: 'GET',
       }),
       providesTags: (result, error, id) => [{ type: 'Employee', id }],
@@ -56,8 +55,7 @@ export const companyApi = apiSlice.injectEndpoints({
           await queryFulfilled;
         } catch (error: any) {
           toast.error(
-            error?.error?.data?.message ||
-              'Failed to fetch employee falling Back to mock data'
+            error?.error?.data?.message || 'Failed to fetch employee'
           );
         }
       },
@@ -76,8 +74,8 @@ export const companyApi = apiSlice.injectEndpoints({
       invalidatesTags: (result, error, { id }) => [{ type: 'Employee', id }],
     }),
 
-    fetchDepartments: builder.query<IDepartment[], void>({
-      query: () => '/api/departments',
+    fetchDepartments: builder.query<IDepartmentResponse, void>({
+      query: () => '/api/department/',
       providesTags: ['Departments'],
       keepUnusedDataFor: 600,
       async onQueryStarted(arg, { queryFulfilled }) {
@@ -85,15 +83,14 @@ export const companyApi = apiSlice.injectEndpoints({
           await queryFulfilled;
         } catch (error: any) {
           toast.error(
-            error?.error?.data?.message ||
-              'Failed to fetch departments falling Back to mock data'
+            error?.error?.data?.message || 'Failed to fetch departments'
           );
         }
       },
     }),
 
-    fetchJobTitles: builder.query<IJobTitle[], void>({
-      query: () => '/api/job-titles',
+    fetchJobTitles: builder.query<IJobTitleResponse, void>({
+      query: () => '/api/jobtitle/',
       providesTags: ['JobTitles'],
       keepUnusedDataFor: 600,
       async onQueryStarted(arg, { queryFulfilled }) {
@@ -101,42 +98,27 @@ export const companyApi = apiSlice.injectEndpoints({
           await queryFulfilled;
         } catch (error: any) {
           toast.error(
-            error?.error?.data?.message ||
-              'Failed to fetch job titles falling Back to mock data'
+            error?.error?.data?.message || 'Failed to fetch job titles'
           );
         }
       },
     }),
 
-    fetchSales: builder.query<
-      ISales[],
-      { page: number; pageSize: number; startDate?: string; endDate?: string }
-    >({
-      query: ({ page, pageSize, startDate, endDate }) => ({
-        url: `/api/sales?page=${page}&pageSize=${pageSize}${startDate ? `&startDate=${startDate}` : ''}${endDate ? `&endDate=${endDate}` : ''}`,
+    fetchSales: builder.query<IPaginatedResponse<ISales>, ISalesRequestParams>({
+      query: ({ page, Status, search, start_date, end_date }) => ({
+        url: `/api/salesorderheader?${page ? `page=${page}` : ''}${Status ? `&Status=${Status}` : ''}${search ? `&search=${search}` : ''}${start_date ? `&start_date=${start_date}` : ''}${end_date ? `&end_date=${end_date}` : ''}`,
         method: 'GET',
       }),
       providesTags: ['Sales'],
       keepUnusedDataFor: 600,
-      // Only have one cache entry because the arg always maps to one string
       serializeQueryArgs: ({ endpointName }) => {
         return endpointName;
-      },
-      // Refetch when the page arg changes
-      forceRefetch({ currentArg, previousArg }) {
-        if (!previousArg || currentArg?.page == 0) {
-          return true;
-        }
-        return currentArg?.page !== previousArg.page;
       },
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
         } catch (error: any) {
-          toast.error(
-            error?.error?.data?.message ||
-              'Failed to fetch sales falling Back to mock data'
-          );
+          toast.error(error?.error?.data?.message || 'Failed to fetch sales');
         }
       },
     }),
@@ -152,24 +134,24 @@ export const companyApi = apiSlice.injectEndpoints({
         try {
           await queryFulfilled;
         } catch (error: any) {
-          toast.error(
-            error?.error?.data?.message ||
-              'Failed to fetch sale falling Back to mock data'
-          );
+          toast.error(error?.error?.data?.message || 'Failed to fetch sale');
         }
       },
     }),
 
-    fetchSalesStatuses: builder.query<IStatus[], void>({
-      query: () => '/api/sales/statuses',
-      providesTags: ['SalesStatuses'],
+    fetchStatInfo: builder.query<ISalesInfo, string>({
+      query: (id) => ({
+        url: `/api/stats/${id}`,
+        method: 'GET',
+      }),
+      keepUnusedDataFor: 600,
+      providesTags: (result, error, id) => [{ type: 'Sale', id }],
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
         } catch (error: any) {
           toast.error(
-            error?.error?.data?.message ||
-              'Failed to fetch sales statuses falling Back to mock data'
+            error?.error?.data?.message || 'Failed to fetch stat data'
           );
         }
       },
@@ -187,5 +169,6 @@ export const {
   useFetchJobTitlesQuery,
   useFetchSalesQuery,
   useFetchSaleQuery,
-  useFetchSalesStatusesQuery,
+  useLazyFetchSalesQuery,
+  useFetchStatInfoQuery,
 } = companyApi;

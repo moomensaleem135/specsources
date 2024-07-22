@@ -15,7 +15,7 @@ const baseQueryWithAuth = fetchBaseQuery({
 });
 
 const baseQueryWithCompany = fetchBaseQuery({
-  baseUrl: 'http://12.23.34.56:5000/',
+  baseUrl: 'http://54.174.178.253/specsources',
   credentials: 'include',
 });
 
@@ -27,8 +27,8 @@ const customBaseQuery: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   if (
     typeof args === 'string'
-      ? args.startsWith('/auth')
-      : args.url.startsWith('/auth')
+      ? args.startsWith('/api/auth')
+      : args.url.startsWith('/api/auth')
   ) {
     return baseQueryWithAuth(args, api, extraOptions);
   } else {

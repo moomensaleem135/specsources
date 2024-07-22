@@ -13,7 +13,7 @@ export const authApi = apiSlice.injectEndpoints({
       { email: string; password: string }
     >({
       query: (data) => ({
-        url: '/api/login', // Ensure the URL is correct
+        url: '/api/auth/login',
         method: 'POST',
         body: data,
       }),
@@ -37,7 +37,7 @@ export const authApi = apiSlice.injectEndpoints({
 
     logout: builder.mutation<void, void>({
       query: () => ({
-        url: '/api/logout',
+        url: '/api/auth/logout',
         method: 'POST',
       }),
       async onQueryStarted(arg, { queryFulfilled }) {
@@ -51,7 +51,7 @@ export const authApi = apiSlice.injectEndpoints({
     }),
 
     getProfile: builder.query<IUser, void>({
-      query: () => '/api/profile', // Ensure the URL is correct
+      query: () => '/api/auth/profile',
       providesTags: ['Profile'],
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {

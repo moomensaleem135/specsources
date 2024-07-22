@@ -1,15 +1,14 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
-import { IEmployee, IDepartment, IJobTitle, ISales, IStatus } from "./types";
+import { IEmployee, IDepartment, IJobTitle, ISales, IStatus } from './types';
 
 export const generateMockDepartments = (totalRecords: number): IDepartment[] => {
     const departments: IDepartment[] = [];
 
     for (let i = 0; i < totalRecords; i++) {
         departments.push({
-            id: faker.string.uuid(),
+            DepartmentID: faker.number.int({ min: 1, max: 1000 }),
             name: faker.commerce.department(),
-            value: faker.commerce.department()
         });
     }
 
@@ -21,9 +20,7 @@ export const generateMockJobTitles = (totalRecords: number): IJobTitle[] => {
 
     for (let i = 0; i < totalRecords; i++) {
         jobTitles.push({
-            id: faker.string.uuid(),
-            name: faker.person.jobTitle(),
-            value: faker.person.jobTitle()
+            JobTitle: faker.person.jobTitle(),
         });
     }
 
@@ -37,7 +34,7 @@ export const generateMockStatuses = (totalRecords: number): IStatus[] => {
         statuses.push({
             id: faker.string.uuid(),
             name: faker.commerce.department(),
-            value: faker.commerce.department()
+            value: faker.commerce.department(),
         });
     }
 
@@ -49,16 +46,22 @@ export const generateMockEmployees = (totalRecords: number): IEmployee[] => {
 
     for (let i = 0; i < totalRecords; i++) {
         employees.push({
-            id: faker.string.uuid(),
-            name: `${faker.person.firstName('male').toString()} ${faker.person.middleName('male').toString()} ${faker.person.lastName('male').toString()}`,
-            email: faker.internet.email(),
-            birthday: faker.date.birthdate({ min: 22, max: 70, mode: "age" }).toDateString(),
-            department: faker.commerce.department(),
-            jobTitle: faker.person.jobTitle(),
-            startData: faker.date.anytime().toDateString(),
-            endData: "",
-            phoneNumber: faker.phone.number(),
-            homeAddress: faker.location.streetAddress(),
+            BusinessEntityID: faker.number.int(),
+            Title: faker.person.prefix(),
+            FirstName: faker.person.firstName(),
+            MiddleName: faker.person.middleName(),
+            LastName: faker.person.lastName(),
+            JobTitle: faker.person.jobTitle(),
+            PhoneNumber: faker.phone.number(),
+            PhoneNumberType: faker.random.word(),
+            EmailAddress: faker.internet.email(),
+            EmailPromotion: faker.number.int({ min: 0, max: 2 }),
+            AddressLine1: faker.location.streetAddress(),
+            AddressLine2: faker.location.secondaryAddress(),
+            City: faker.location.city(),
+            StateProvinceName: faker.location.state(),
+            PostalCode: faker.location.zipCode(),
+            CountryRegionName: faker.location.country(),
         });
     }
 
@@ -70,14 +73,27 @@ export const generateMockSales = (totalRecords: number): ISales[] => {
 
     for (let i = 0; i < totalRecords; i++) {
         sales.push({
-            id: faker.string.uuid(),
-            accountNumber: faker.finance.accountNumber(),
-            billToAddress: faker.location.streetAddress(),
-            orderDate: faker.date.anytime().toDateString(),
-            status: faker.string.sample(10),
-            subTotal: faker.finance.amount(),
-            tax: faker.finance.amount(),
-            totalAmount: faker.finance.amount()
+            SalesOrderID: faker.number.int(),
+            SalesOrderNumber: `SO${faker.number.int()}`,
+            PurchaseOrderNumber: `PO${faker.number.int()}`,
+            AccountNumber: `10-4020-${faker.number.int()}`,
+            OrderDate: faker.date.anytime().toISOString(),
+            Status: faker.number.int({ min: 1, max: 5 }),
+            SubTotal: faker.finance.amount(),
+            TaxAmt: faker.finance.amount(),
+            Freight: faker.finance.amount(),
+            TotalDue: faker.finance.amount(),
+            ModifiedDate: faker.date.anytime().toISOString(),
+            SalesPersonID: faker.number.int(),
+            BillToAddressID: {
+                AddressID: faker.number.int(),
+                AddressLine1: faker.location.streetAddress(),
+                AddressLine2: faker.location.secondaryAddress(),
+                City: faker.location.city(),
+                PostalCode: faker.location.zipCode(),
+                rowguid: faker.string.uuid(),
+                StateProvinceID: faker.number.int(),
+            },
         });
     }
 

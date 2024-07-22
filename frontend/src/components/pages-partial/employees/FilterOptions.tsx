@@ -10,13 +10,9 @@ interface FilterOptionsProps {
   onSearchChange: (val: React.ChangeEvent<HTMLInputElement>) => void;
   onDepartmentChange: (value: string) => void;
   onJobtitleChange: (value: string) => void;
-  departments: { name: string; value: string }[];
-  jobTitles: { name: string; value: string }[];
 }
 
 export const FilterOptions: React.FC<FilterOptionsProps> = ({
-  departments,
-  jobTitles,
   onDepartmentChange,
   onJobtitleChange,
   onSearchChange,
@@ -38,16 +34,10 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
         />
       </div>
       <div className="col-span-6 md:col-span-3">
-        <SelectDepartment
-          departments={departments}
-          onDepartmentChange={onDepartmentChange}
-        />
+        <SelectDepartment onDepartmentChange={onDepartmentChange} />
       </div>
       <div className="col-span-6 md:col-span-3">
-        <SelectJobTitles
-          jobTitles={jobTitles}
-          onJobtitleChange={onJobtitleChange}
-        />
+        <SelectJobTitles onJobtitleChange={onJobtitleChange} />
       </div>
     </div>
   );
