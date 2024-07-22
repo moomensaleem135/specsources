@@ -38,9 +38,9 @@ const columns: ColDef[] = [
   },
   { headerName: 'Department', field: 'StateProvinceName', minWidth: 150 },
   { headerName: 'Job Title', field: 'JobTitle', minWidth: 150 },
-  { headerName: 'Start Date', field: 'StartData', minWidth: 150 }, // You might need to transform the date format
+  { headerName: 'Start Date', field: 'StartDate', minWidth: 150 },
   { headerName: 'Phone Number', field: 'PhoneNumber', minWidth: 150 },
-  { headerName: 'Birthday', field: 'Birthday', minWidth: 150 }, // You might need to transform the date format
+  { headerName: 'Birthday', field: 'BirthDate', minWidth: 150 },
   {
     headerName: 'Home Address',
     field: 'AddressLine1',

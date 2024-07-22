@@ -27,11 +27,8 @@ const TopNavbar = ({ title }: { title: string }) => {
   // handlers
   const handleLogout = async () => {
     try {
-      logout()
-        .unwrap()
-        .then(() => {
-          router.push(loginUrl);
-        });
+      logout();
+      router.push(loginUrl);
     } catch (error) {
       console.error('Failed to logout:', error);
     }

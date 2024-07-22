@@ -10,7 +10,7 @@ import {
 
 // Define the base queries for different base URLs
 const baseQueryWithAuth = fetchBaseQuery({
-  baseUrl: '/',
+  baseUrl: 'http://54.174.178.253/specsources',
   credentials: 'same-origin',
 });
 

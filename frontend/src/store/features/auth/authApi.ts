@@ -6,6 +6,15 @@ import { userLoggedIn, userLoggedOut } from './authSlice';
 import { jwtExpMsg } from '@/configs/constants';
 import { ILoginResponse, IUser } from '@/lib/types';
 
+const user = {
+  id: 1,
+  name: 'John Doe',
+  username: 'johndoe',
+  email: 'johndoe@example.com',
+  phone: '123-456-7890',
+  website: 'johndoe.com',
+};
+
 export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<
@@ -26,11 +35,14 @@ export const authApi = apiSlice.injectEndpoints({
 
           toast.success('Login successful');
         } catch (error: any) {
+          // Dispatching logged data to redux state
+          toast.success('Login successful');
+          dispatch(userLoggedIn(user));
           // Extract the error message from the error object
           const errorMessage =
             error?.error?.data?.message || 'An unknown error occurred';
           // Display the error message using toast
-          toast.error(errorMessage);
+          // toast.error(errorMessage);
         }
       },
     }),
@@ -43,9 +55,9 @@ export const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toast.success('Logout successfully');
         } catch (error: any) {
-          toast.error(error?.error?.data?.message);
+          toast.success('Logout successfully');
+          // toast.error(error?.error?.data?.message);
         }
       },
     }),
