@@ -106,7 +106,7 @@ const SalesHistory: React.FC<SalesHistoryProps> = () => {
   );
 
   return (
-    <div className="py-4 px-8 w-full">
+    <div className="pb-4 px-4 md:px-8 w-full">
       <FilterOptions
         onStatusChange={onStatusChange}
         onSearchChange={onSearchChange}

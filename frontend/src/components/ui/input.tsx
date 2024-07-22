@@ -32,7 +32,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }, [shouldFocus, ref]);
 
     return (
-      <div className="custom-input-field w-full">
+      <div className="w-full">
         {/* to remove browser autofill colors */}
         <style jsx>{`
           input:-webkit-autofill,
@@ -49,11 +49,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             transition: background-color 5000s ease-in-out 0s !important;
           }
         `}</style>
-        <div className="relative -left-[0.4rem] w-full h-9 ">
+        <div className="relative -left-[0.4rem] w-full h-9 items-center flex">
           <input
             className={cn(
-              `text-input-class peer w-full h-full text-headingColor font-normal outline outline-0 focus:outline-0 
-               disabled:bg-brand transition-all text-base px-3 py-2.5 rounded-[7px] bg-transparent focus:bg-transparent placeholder:text-placeholder placeholder:text-base`,
+              `h-6 text-input-class peer w-full text-headingColor font-normal outline outline-0 focus:outline-0 
+               disabled:bg-brand transition-all text-base px-3 py-2 rounded-[7px] bg-transparent focus:bg-transparent placeholder:text-placeholder placeholder:text-base`,
               className,
               extraClass
             )}

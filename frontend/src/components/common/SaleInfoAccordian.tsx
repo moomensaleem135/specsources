@@ -18,7 +18,7 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
   salesInfo,
 }) => {
   return (
-    <Accordion type="single" collapsible>
+    <Accordion type="single" collapsible defaultValue="item-1">
       <AccordionItem value="item-1">
         <AccordionTrigger className="focous:outline-0 focus-within:outline-none focus:border-0">
           <div className="w-full ">
@@ -43,9 +43,10 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
                 <div className="col-span-12 md:col-span-4 border-b-2 border-b-border">
                   <div className="flex justify-between">
                     <p className="font-semibold text-left text-primary text-base">
-                      $ Average Sales:
+                      Average Sales:
                     </p>
                     <p className="font-medium text-right text-headingColor text-lg">
+                      ${' '}
                       {salesInfo.average_sales_with_freight_and_tax?.toFixed(2)}
                     </p>
                   </div>
@@ -53,10 +54,10 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
                 <div className="col-span-12 md:col-span-4 border-b-2 border-b-border">
                   <div className="flex justify-between">
                     <p className="font-semibold text-left text-primary text-base">
-                      $ Total Sales:
+                      Total Sales:
                     </p>
                     <p className="font-medium text-right text-headingColor text-lg">
-                      {salesInfo.total_sales_with_freight_and_tax?.toFixed(2)}
+                      $ {salesInfo.total_sales_with_freight_and_tax?.toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -72,9 +73,10 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
                 <div className="col-span-12 md:col-span-4 border-b-2 border-b-border">
                   <div className="flex justify-between">
                     <p className="font-semibold text-left text-primary text-base">
-                      $ Average Sales:
+                      Average Sales:
                     </p>
                     <p className="font-medium text-right text-headingColor text-lg">
+                      ${' '}
                       {salesInfo.average_sales_without_freight_and_tax?.toFixed(
                         2
                       )}
@@ -84,9 +86,10 @@ const SalesInfoAccordion: React.FC<SalesInfoAccordionProps> = ({
                 <div className="col-span-12 md:col-span-4 border-b-2 border-b-border">
                   <div className="flex justify-between">
                     <p className="font-semibold text-left text-primary text-base">
-                      $ Total Sales:
+                      Total Sales:
                     </p>
                     <p className="font-medium text-right text-headingColor text-lg">
+                      ${' '}
                       {salesInfo.total_sales_without_freight_and_tax?.toFixed(
                         2
                       )}

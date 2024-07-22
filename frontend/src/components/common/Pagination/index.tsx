@@ -52,7 +52,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
         <p className="mr-2 mt-2 text-headingColor font-normal text-sm hidden sm:flex">
           Result Per Page:
         </p>
-        <div className="w-15 ">
+        <div className="w-15 hidden sm:flex">
           <Select onValueChange={handlePageSizeChange} value={pageSize}>
             <SelectTrigger
               iconColor="fill-border stroke-border ml-3"

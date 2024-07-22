@@ -37,7 +37,7 @@ const IconInput = React.forwardRef<HTMLInputElement, IconInputProps>(
     return (
       <div
         className={cn(
-          'group flex w-full gap-1.5 px-3 pt-4 pb-3 !font-medium rounded-md border ',
+          'group flex w-full gap-x-1.5 px-3 pt-[3px] rounded-md border items-center',
           error
             ? 'border-destructive'
             : 'focus-within:border-primary focus-within:!bg-brand-medium',

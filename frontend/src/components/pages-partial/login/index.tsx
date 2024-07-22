@@ -105,13 +105,13 @@ export default function PartialLogin() {
 
   return (
     <AuthLayout>
-      <div className="w-full h-[90vh]  flex flex-col items-center justify-center">
+      <div className="w-full h-[90vh] flex flex-col items-center justify-center">
         <div className="flex relative w-full items-center justify-center my-5 ">
           <NextImage src={Logo} alt="Logo" unoptimized />
         </div>
-        <div className="w-full md:w-1/2 2xl:w-1/3  flex items-center flex-col justify-center bg-foreground rounded-3xl p-8 border-2 border-primary">
+        <div className="w-full  md:w-1/2 2xl:w-1/3 py-8 px-4 md:px-8 flex items-center flex-col justify-center bg-foreground rounded-3xl  border-2 border-primary">
           <AvatarIcon className="w-15 h-16" />
-          <h1 className="text-3xl font-semibold text-headingColor">
+          <h1 className="text-3xl text-center font-semibold text-headingColor mt-2">
             Welcome Back!
           </h1>
           <div className="flex align-center pt-2">
@@ -148,17 +148,12 @@ export default function PartialLogin() {
                               aria-label={field.label}
                               label={field.label}
                               error={!!form.formState.errors[field.name]}
-                              iconClassName={
-                                formField.name === 'email'
-                                  ? 'fill-transparent text-accent mt-0.5 h-8 w-8'
-                                  : ''
-                              }
                               className={
                                 formField.name === 'password'
-                                  ? 'mt-4 pt-5'
-                                  : 'pt-5'
+                                  ? 'mt-4 pt-4 pb-2'
+                                  : 'pt-4 pb-2'
                               }
-                              inputClassName="text-base"
+                              inputClassName="text-base h-10 -mt-2"
                             />
                           </FormControl>
                           <FormMessage className="text-destructive">

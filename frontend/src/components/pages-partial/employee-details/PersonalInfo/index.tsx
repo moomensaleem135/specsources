@@ -1,5 +1,7 @@
 'use client';
 import React, { useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import Datepicker, { DateValueType } from 'react-tailwindcss-datepicker';
@@ -18,7 +20,6 @@ import { Button } from '@/components/ui/button';
 import { SelectDepartment } from '@/components/common/SelectDepartment';
 import { SelectJobTitles } from '@/components/common/SelectJobTitles';
 
-import { useRouter, useSearchParams } from 'next/navigation';
 import { IEmployee } from '@/lib/types';
 import { employeesUrl } from '@/constants';
 
@@ -73,7 +74,7 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
   });
 
   const [birthday, setBirthDay] = React.useState<DateValueType>({
-    startDate: employeeData?.Birthday ? new Date(employeeData?.Birthday) : null,
+    startDate: null,
     endDate: null,
   });
 
@@ -83,25 +84,27 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
   };
 
   const handleBirthDayChange = (newValue: DateValueType) => {
+    console.log({ newValue });
     setBirthDay(newValue);
     if (newValue?.startDate) {
       form.setValue('Birthday', newValue.startDate.toString());
     }
   };
 
-  // useEffect(() => {
-  //   if (employeeData.Birthday) {
-  //     form.reset({
-  //       ...employeeData,
-  //       Birthday: employeeData.Birthday
-  //         ? new Date(employeeData.Birthday).toISOString()
-  //         : '',
-  //     });
-  //   }
-  // }, [employeeData, form]);
+  useEffect(() => {
+    if (employeeData) {
+      setBirthDay({
+        startDate: employeeData.Birthday as any,
+        endDate: null,
+      });
+      form.reset(employeeData as any);
+    }
+  }, [employeeData, form]);
+
+  console.log({ employeeData });
 
   return (
-    <div className="px-8 w-full md:w-3/4 ">
+    <div className="px-4 md:px-8 w-full md:w-3/4">
       <div className="gap-y-3">
         <p className="font-semibold text-headingColor text-lg">Personal info</p>
         <p className="font-normal text-subheadingColor text-sm">
@@ -133,7 +136,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                           label=""
                           placeholder="First Name"
                           error={!!form.formState.errors.FirstName}
-                          className="!py-1"
                         />
                       </FormControl>
                       <FormMessage className="text-primary">
@@ -156,7 +158,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                           placeholder="Middle Name"
                           label=""
                           error={!!form.formState.errors.MiddleName}
-                          className="!py-1"
                         />
                       </FormControl>
                       <FormMessage className="text-primary">
@@ -179,7 +180,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                           label=""
                           placeholder="Last Name"
                           error={!!form.formState.errors.LastName}
-                          className="!py-1"
                         />
                       </FormControl>
                       <FormMessage className="text-primary">
@@ -215,8 +215,7 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                         label=""
                         placeholder="Email Address"
                         error={!!form.formState.errors.EmailAddress}
-                        className="!py-1"
-                        iconClassName="w-6 h-6 mt-2 mr-0 fill-transparent "
+                        iconClassName="w-6 h-6 mr-0 fill-transparent "
                       />
                     </FormControl>
                     <FormMessage className="text-primary">
@@ -257,7 +256,7 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                         inputName={field.name}
                         popoverDirection="down"
                         inputClassName={
-                          'relative duration-300 py-1.5 pr-14 pl-12 w-full text-base text-headingColor placeholder-placeholder font-normal !bg-transparent focus:border-none focus:outline-0  '
+                          'relative duration-300 py-[4px] pr-14 pl-12 w-full text-base text-headingColor placeholder-placeholder font-normal !bg-transparent focus:border-none focus:outline-0  '
                         }
                         asSingle
                         readOnly
@@ -295,8 +294,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                         label=""
                         placeholder="Address Line 1"
                         error={!!form.formState.errors.AddressLine1}
-                        className="!py-1"
-                        iconClassName="w-6 h-6 mt-2 mr-0 fill-transparent "
                       />
                     </FormControl>
                     <FormMessage className="text-primary">
@@ -330,8 +327,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                         label=""
                         placeholder="Address Line 2"
                         error={!!form.formState.errors.AddressLine2}
-                        className="!py-1"
-                        iconClassName="w-6 h-6 mt-2 mr-0 fill-transparent "
                       />
                     </FormControl>
                     <FormMessage className="text-primary">
@@ -365,8 +360,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                             label=""
                             placeholder="City"
                             error={!!form.formState.errors.City}
-                            className="!py-1"
-                            iconClassName="w-6 h-6 mt-2 mr-0 fill-transparent "
                           />
                         </FormControl>
                         <FormMessage className="text-primary">
@@ -396,8 +389,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                             label=""
                             placeholder="State"
                             error={!!form.formState.errors.StateProvinceName}
-                            className="!py-1"
-                            iconClassName="w-6 h-6 mt-2 mr-0 fill-transparent "
                           />
                         </FormControl>
                         <FormMessage className="text-primary">
@@ -435,8 +426,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                             label=""
                             placeholder="Postal Code"
                             error={!!form.formState.errors.PostalCode}
-                            className="!py-1"
-                            iconClassName="w-6 h-6 mt-2 mr-0 fill-transparent "
                           />
                         </FormControl>
                         <FormMessage className="text-primary">
@@ -466,8 +455,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
                             label=""
                             placeholder="Country"
                             error={!!form.formState.errors.CountryRegionName}
-                            className="!py-1"
-                            iconClassName="w-6 h-6 mt-2 mr-0 fill-transparent "
                           />
                         </FormControl>
                         <FormMessage className="text-primary">
