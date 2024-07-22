@@ -50,10 +50,20 @@ class PersonSerializer(serializers.ModelSerializer):
 
 class VEmployeeSerializer(serializers.ModelSerializer):
     Department = serializers.SerializerMethodField()
+    BirthDate = serializers.SerializerMethodField()
+    StartDate = serializers.SerializerMethodField()
 
     class Meta:
         model = VEmployee
         fields = "__all__"
+
+    def get_BirthDate(self, obj):
+        try:
+            # Assuming there's a way to fetch related Employee instance by BusinessEntityID
+            employee = Employee.objects.get(BusinessEntityID=obj.BusinessEntityID)
+            return employee.BirthDate
+        except Employee.DoesNotExist:
+            return None
 
     def get_Department(self, obj):
         try:
@@ -65,18 +75,12 @@ class VEmployeeSerializer(serializers.ModelSerializer):
         except Department.DoesNotExist:
             return None
 
-
-class VEmployeeDetailSerializer(serializers.ModelSerializer):
-    BirthDate = serializers.SerializerMethodField()
-
-    class Meta:
-        model = VEmployee
-        fields = "__all__"
-
-    def get_BirthDate(self, obj):
+    def get_StartDate(self, obj):
         try:
             # Assuming there's a way to fetch related Employee instance by BusinessEntityID
-            employee = Employee.objects.get(BusinessEntityID=obj.BusinessEntityID)
-            return employee.BirthDate
+            employee = EmployeeDepartment.objects.get(
+                BusinessEntityID=obj.BusinessEntityID
+            )
+            return employee.StartDate
         except Employee.DoesNotExist:
             return None

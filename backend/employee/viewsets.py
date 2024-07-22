@@ -1,7 +1,5 @@
-from rest_framework import viewsets, status
-from rest_framework.response import Response
+from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework_datatables.pagination import DatatablesPageNumberPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Employee, Department, Address, Person, VEmployee, SalesOrderHeader
 from .serializers import (
@@ -11,7 +9,6 @@ from .serializers import (
     AddressSerializer,
     PersonSerializer,
     VEmployeeSerializer,
-    VEmployeeDetailSerializer,
     SalesOrderHeaderSerializer,
 )
 from .filters import VEmployeeFilter, SalesOrderFilter
@@ -65,12 +62,3 @@ class VEmployeeViewSet(viewsets.ModelViewSet):
         "PhoneNumber",
         "EmailAddress",
     ]
-
-    def retrieve(self, request, *args, **kwargs):
-        try:
-            instance = self.get_object()
-        except VEmployee.DoesNotExist:
-            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = VEmployeeDetailSerializer(instance)
-        return Response(serializer.data)
