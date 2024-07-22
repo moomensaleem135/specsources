@@ -64,7 +64,7 @@ export const generateMockEmployees = (totalRecords: number): IEmployee[] => {
       StateProvinceName: faker.location.state(),
       PostalCode: faker.location.zipCode(),
       CountryRegionName: faker.location.country(),
-      Birthday: faker.date.birthdate().toDateString(),
+      BirthDate: faker.date.birthdate().toDateString(),
     });
   }
 
