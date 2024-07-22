@@ -38,7 +38,7 @@ interface PaginationNavProps {
   pageToken?: string[];
   showNumbers?: boolean;
   length: number;
-  currentPage?: number;
+  currentPage: number;
   pageSize?: number;
 }
 
@@ -125,7 +125,7 @@ const PaginationNav: React.FC<PaginationNavProps> = ({
           <ChevronRightIcon className={`ml-1 h-5 w-5`} aria-hidden="true" />
         </button>
       </li>
-      {currentPage && pageSize && (
+      {pageSize && (
         <li>
           <p className="hidden sm:inline-flex items-center py-2 px-3 text-input">
             Results {(currentPage - 1) * pageSize + 1} -{' '}
@@ -142,7 +142,7 @@ interface PageNumbersProps {
   pageToken?: string[];
   length: number;
   showNumbers?: boolean;
-  currentPage?: number;
+  currentPage: number;
   pageSize?: number;
 }
 

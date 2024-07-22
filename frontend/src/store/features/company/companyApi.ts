@@ -19,7 +19,7 @@ export const companyApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     fetchEmployees: builder.query<IEmployeeResponse, IEmployeesRequestParams>({
       query: ({ page, search, JobTitle }) => ({
-        url: `/api/vemployee?${page ? `page=${page}` : ''}${search ? `&search=${search}` : ''}&${JobTitle ? `&JobTitle=${JobTitle}` : ''}`,
+        url: `/api/vemployee${page ? `?page=${page}` : ''}${search ? `&search=${search}` : ''}${JobTitle ? `&JobTitle=${JobTitle}` : ''}`,
         method: 'GET',
       }),
       providesTags: ['Employees'],

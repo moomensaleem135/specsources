@@ -35,9 +35,7 @@ export const FilterOptions: React.FC<FilterOptionsProps> = ({
           placeholder="Search"
           label={''}
           onChange={onSearchChange}
-          iconClassName="w-6 h-6 text-primary mt-1"
-          inputClassName="!h-6 mt-1"
-          className="!pt-[3px] pb-0"
+          iconClassName="w-6 h-6 mr-0 fill-transparent "
         />
       </div>
       <div className="col-span-12 md:col-span-2">

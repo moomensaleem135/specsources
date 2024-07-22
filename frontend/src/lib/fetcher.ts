@@ -43,8 +43,6 @@ async function fetcher<Res, Req = never>({
       ...options,
     });
 
-    console.log('STATUS:', response.status);
-
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }

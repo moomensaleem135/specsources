@@ -17,6 +17,10 @@ const baseQueryWithAuth = fetchBaseQuery({
 const baseQueryWithCompany = fetchBaseQuery({
   baseUrl: 'http://54.174.178.253/specsources',
   credentials: 'include',
+  prepareHeaders: (headers) => {
+    headers.set('Content-Type', 'application/json');
+    return headers;
+  },
 });
 
 // Custom baseQuery function to choose the correct baseQuery

@@ -56,7 +56,6 @@ export const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log('get profile result', result);
           dispatch(userLoggedIn(result.data));
         } catch (error: any) {
           if (error.error.data.message === jwtExpMsg) {

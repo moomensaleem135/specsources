@@ -14,7 +14,7 @@ export default function PartialEmployees() {
     React.useState<string>('');
   const [selectedJobTitle, setSelectedJobTitle] = React.useState<string>('');
   const [searchedText, setSearchedText] = React.useState<string>('');
-  const [page, setPage] = React.useState<number>(0);
+  const [page, setPage] = React.useState<number>(1);
 
   // args
   const queryArgs: IEmployeesRequestParams = {

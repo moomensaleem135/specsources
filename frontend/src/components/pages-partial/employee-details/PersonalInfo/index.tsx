@@ -84,7 +84,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
   };
 
   const handleBirthDayChange = (newValue: DateValueType) => {
-    console.log({ newValue });
     setBirthDay(newValue);
     if (newValue?.startDate) {
       form.setValue('Birthday', newValue.startDate.toString());
@@ -100,8 +99,6 @@ const EmployeePersonalDetails: React.FC<EmployeePersonalDetailsProps> = ({
       form.reset(employeeData as any);
     }
   }, [employeeData, form]);
-
-  console.log({ employeeData });
 
   return (
     <div className="px-4 md:px-8 w-full md:w-3/4">

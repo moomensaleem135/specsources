@@ -13,7 +13,7 @@ import { cn } from '@/lib/cn';
 interface PaginationControlsProps {
   pageSize?: string;
   setPageSize?: (size: string) => void;
-  currentPage?: number;
+  currentPage: number;
   setCurrentPage?: (page: number) => void;
   totalRows: number;
   pageClassName?: string;

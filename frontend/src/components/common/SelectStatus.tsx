@@ -17,7 +17,14 @@ export const SelectStatus: React.FC<SelectStatusProps> = ({
   onStatusChange,
   initialStatus,
 }) => {
-  const statusOptions = ['0', '1', '2', '3', '4', '5'];
+  const statusOptions = [
+    { value: 1, name: 'In process' },
+    { value: 2, name: 'Approved' },
+    { value: 3, name: 'Backordered' },
+    { value: 4, name: 'Rejected' },
+    { value: 5, name: 'Shipped' },
+    { value: 6, name: 'Cancelled' },
+  ];
 
   const [selectedStatus, setSelectedStatus] = React.useState<
     string | undefined
@@ -27,9 +34,9 @@ export const SelectStatus: React.FC<SelectStatusProps> = ({
     setSelectedStatus(initialStatus);
   }, [initialStatus]);
 
-  const handleChange = (title: string) => {
-    setSelectedStatus(title);
-    onStatusChange(title);
+  const handleChange = (value: string) => {
+    setSelectedStatus(value);
+    onStatusChange(value);
   };
 
   return (
@@ -46,8 +53,8 @@ export const SelectStatus: React.FC<SelectStatusProps> = ({
         </SelectTrigger>
         <SelectContent>
           {statusOptions.map((status) => (
-            <SelectItem key={status} value={status}>
-              <span>{status}</span>
+            <SelectItem key={status.value} value={status.value.toString()}>
+              <span>{status.name}</span>
             </SelectItem>
           ))}
         </SelectContent>

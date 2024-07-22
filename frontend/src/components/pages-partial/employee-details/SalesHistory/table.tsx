@@ -1,27 +1,43 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { ColDef } from '@ag-grid-community/core';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ColDef, SortChangedEvent } from '@ag-grid-community/core';
 
 import AgGridTable from '@/components/ui/ag-table';
 
 import { ISales } from '@/lib/types';
 
 const columns: ColDef[] = [
-  { headerName: 'Order Date', field: 'OrderDate', minWidth: 150 },
-  { headerName: 'Account #', field: 'AccountNumber', minWidth: 150 },
+  {
+    headerName: 'Order Date',
+    field: 'OrderDate',
+    minWidth: 150,
+  },
+  {
+    headerName: 'Account #',
+    field: 'AccountNumber',
+    minWidth: 150,
+  },
   {
     headerName: 'Bill To Address',
     field: 'billToAddress',
     minWidth: 150,
     valueGetter: (params) =>
-      `${params.data.AddressLine1 || ''} ${params.data.AddressLine2 || ''} ${params.data.PostalCode || ''} ${params.data.City || ''}`.trim(),
+      `${params.data.BillToAddressID.AddressLine1 || ''} ${params.data.BillToAddressID.AddressLine2 || ''} ${params.data.BillToAddressID.PostalCode || ''} ${params.data.BillToAddressID.City || ''}`.trim(),
   },
-  { headerName: 'Status', field: 'Status', minWidth: 150 },
+  {
+    headerName: 'Status',
+    field: 'Status',
+    minWidth: 150,
+  },
   { headerName: 'Sub Total', field: 'SubTotal', minWidth: 150 },
-  { headerName: 'Tax', field: 'TaxAmt', minWidth: 150 },
-  { headerName: 'Total Amount', field: 'TotalDue', minWidth: 150 },
+  {
+    headerName: 'Total Amount',
+    field: 'TotalDue',
+    minWidth: 150,
+  },
 ];
+
 interface ISalesTable {
   enablePagination?: boolean;
   customHeight?: number;
@@ -37,9 +53,21 @@ const SalesTable: React.FC<ISalesTable> = ({
   page,
   setPage,
 }) => {
+  // states
   const [pageSize, setPageSize] = useState<string>('20');
   const [rowData, setRowData] = useState<ISales[]>([]);
+  const [sortState, setSortState] = useState<{
+    sortColumn: string;
+    sortDirection: string;
+  }>({
+    sortColumn: '',
+    sortDirection: '',
+  });
 
+  // handlers
+  const handleSortChange = useCallback((event: SortChangedEvent) => {}, []);
+
+  // effect to set rows
   useEffect(() => {
     setRowData(sales);
   }, [sales]);
@@ -57,6 +85,7 @@ const SalesTable: React.FC<ISalesTable> = ({
       onPageChange={setPage}
       customHeight={customHeight}
       pageClassName="mx-0"
+      onSortChanged={handleSortChange}
     />
   );
 };

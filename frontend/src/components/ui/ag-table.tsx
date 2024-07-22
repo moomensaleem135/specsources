@@ -18,7 +18,7 @@ interface AgGridTableProps extends AgGridReactProps {
   totalRows: number;
   pageSize?: string;
   setPageSize?: (size: string) => void;
-  currentPage?: number;
+  currentPage: number;
   setCurrentPage?: (page: number) => void;
   enablePagination?: boolean;
   onPageChange?: (page: number) => void;
@@ -51,6 +51,7 @@ const AgGridTable: React.FC<AgGridTableProps> = ({
       filter: false,
       resizable: false,
       flex: 1,
+      unSortIcon: true,
     }),
     []
   );
