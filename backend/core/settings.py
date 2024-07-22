@@ -27,7 +27,7 @@ SECRET_KEY = "django-insecure-j^y^cbwu+!g56t(_ym9d_zpf@6*04alm1&ojhn_7m3)vyoqr+w
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1", "specsources.vercel.app"]
 
 
 # Application definition
@@ -165,4 +165,18 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:7035",
     "https://specsources.vercel.app",
+    "*",
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "*",
 ]
