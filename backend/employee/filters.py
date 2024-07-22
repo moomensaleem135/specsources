@@ -1,5 +1,5 @@
 import django_filters
-from .models import VEmployee, SalesOrderHeader
+from .models import VEmployee, SalesOrderHeader, EmployeeDepartment
 from django_filters.filters import DateRangeFilter, DateFilter
 from datetime import timedelta
 
@@ -12,9 +12,17 @@ class EndFilter(django_filters.DateFilter):
 
 
 class VEmployeeFilter(django_filters.FilterSet):
+    Department = django_filters.CharFilter(method="filter_department", label="Department")
+
     class Meta:
         model = VEmployee
         fields = "__all__"
+
+    def filter_department(self, queryset, name, value):
+        business_entity_ids = EmployeeDepartment.objects.filter(
+            Department__icontains=value
+        ).values_list("BusinessEntityID", flat=True)
+        return queryset.filter(BusinessEntityID__in=business_entity_ids)
 
 
 class SalesOrderFilter(django_filters.FilterSet):

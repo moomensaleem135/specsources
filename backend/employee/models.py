@@ -195,6 +195,7 @@ class SalesOrderHeader(BaseModel):
 
     class Meta:
         db_table = "[Sales].[SalesOrderHeader]"
+        ordering = ["-OrderDate"]
 
 
 class VEmployee(BaseModel):
@@ -217,3 +218,24 @@ class VEmployee(BaseModel):
 
     class Meta:
         db_table = "[HumanResources].[vEmployee]"
+        ordering = ["BusinessEntityID"]
+
+
+class EmployeeDepartment(BaseModel):
+    BusinessEntityID = models.IntegerField(primary_key=True)
+    Title = models.CharField(max_length=8, blank=True, null=True)
+    FirstName = models.CharField(max_length=50)
+    MiddleName = models.CharField(max_length=50, blank=True, null=True)
+    LastName = models.CharField(max_length=50)
+    Suffix = models.CharField(max_length=10, blank=True, null=True)
+    JobTitle = models.CharField(max_length=50)
+    Department = models.CharField(max_length=50)
+    GroupName = models.CharField(max_length=50)
+    StartDate = models.DateField()
+
+    class Meta:
+        db_table = "[HumanResources].[vEmployeeDepartment]"
+        ordering = ["BusinessEntityID"]
+
+    def __str__(self):
+        return f"{self.FirstName} {self.LastName} - {self.Department}"
